@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AuthenticationActivity">
+
+    <include
+        layout="@layout/layout_header"
+        android:layout_width="match_parent"
+        android:layout_height="187dp" />
+
+    <EditText
+        android:id="@+id/identifiant"
+        android:layout_marginTop="30dp"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:background="@drawable/border_visible"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        android:hint="Username" />
+
+    <EditText
+        android:id="@+id/mot_de_passe"
+        android:layout_marginTop="10dp"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:background="@drawable/border_visible"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:textAlignment="center"
+        android:textColor="#676262"
+        android:hint="Password" />
+
+    <TextView
+        android:id="@+id/errorLogin"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:background="@android:color/white"
+        android:text=""
+        android:textColor="#ba160c" />
+
+    <Button
+        android:id="@+id/seConnecter"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@android:color/holo_blue_light"
+        android:textColor="@color/black"
+        android:text="GO !" />
+
+    <Button
+        android:id="@+id/inscrire"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:backgroundTint="@android:color/holo_blue_light"
+        android:textColor="@color/black"
+        android:text="Register"  />
+
+    <Button
+        android:id="@+id/invite"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:backgroundTint="@android:color/holo_blue_light"
+        android:textColor="@color/black"
+        android:text="Se Connecter en tant qu'invité"  />
+</LinearLayout>

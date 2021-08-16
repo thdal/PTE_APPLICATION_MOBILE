@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".RegisterActivity">
+
+    <include
+        layout="@layout/layout_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <EditText
+        android:id="@+id/Username"
+        android:layout_marginTop="50dp"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:background="@drawable/border_visible"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        android:hint="Username"  />
+
+    <EditText
+        android:id="@+id/Password"
+        android:layout_marginTop="10dp"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:background="@drawable/border_visible"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:textAlignment="center"
+        android:textColor="#676262"
+        android:hint="Password" />
+
+    <EditText
+        android:id="@+id/Firstname"
+        android:layout_marginTop="10dp"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:ems="10"
+        android:background="@drawable/border_visible"
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        android:hint="Firstname"  />
+
+    <EditText
+        android:id="@+id/Lastname"
+        android:layout_marginTop="10dp"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:background="@drawable/border_visible"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        android:hint="Lastname" />
+
+
+
+    <TextView
+        android:id="@+id/errorRegister"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:background="@android:color/white"
+        android:text=""
+        android:textColor="#ba160c" />
+
+    <Button
+        android:id="@+id/sinscrire"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@android:color/holo_blue_light"
+        android:textColor="@color/black"
+        android:text="S'inscrire" />
+
+    <Button
+        android:id="@+id/DejaClient"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:backgroundTint="@android:color/holo_blue_light"
+        android:textColor="@color/black"
+        android:text="Déja Client ? Se Connecter" />
+
+</LinearLayout>
