@@ -1,0 +1,90 @@
+package com.example.globallive.entities;
+
+public class User {
+
+    int id;
+    String firstName;
+    String lastName;
+    String email;
+    String password;
+    int profile_id;
+    int genre_id;
+    int userImg;
+    int isBanned;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getIsBanned() {
+        return isBanned;
+    }
+
+    public void setIsBanned(int isBanned) {
+        this.isBanned = isBanned;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public int getProfile_id() {
+        return profile_id;
+    }
+
+    public void setProfile_id(int profile_id) {
+        this.profile_id = profile_id;
+    }
+
+    public int getGenre_id() {
+        return genre_id;
+    }
+
+    public void setGenre_id(int genre_id) {
+        this.genre_id = genre_id;
+    }
+
+    public int isUserImg() {
+        return userImg;
+    }
+
+    public int getUserImg() {
+        return userImg;
+    }
+
+    public void setUserImg(int userImg) {
+        this.userImg = userImg;
+    }
+}

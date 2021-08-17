@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.globallive.entities.AuthenticatedUser;
 import com.example.globallive.entities.Person;
+import com.example.globallive.entities.User;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -14,6 +15,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public class UserServiceImplementation implements IUserService {
     //mettre son ip local, localhost pose pb
@@ -55,7 +57,7 @@ public class UserServiceImplementation implements IUserService {
 
         JSONArray array = new JSONArray(json.toString());
         ObjectMapper mapper = new ObjectMapper();
-        String return_value = mapper.readValue(String.valueOf(array), new TypeReference<String>(){});
+        List<User> return_value = mapper.readValue(String.valueOf(array), new TypeReference<List<User>>(){});
         Log.d("USERSERVICE", return_value.toString());
     }
 }
