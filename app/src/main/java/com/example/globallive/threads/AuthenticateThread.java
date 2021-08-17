@@ -4,6 +4,8 @@ import com.example.globallive.entities.AuthenticatedUser;
 import com.example.globallive.entities.Person;
 import com.example.globallive.services.IUserService;
 
+import org.json.JSONException;
+
 import java.io.IOException;
 
 public class AuthenticateThread extends Thread{
@@ -19,8 +21,8 @@ public class AuthenticateThread extends Thread{
 
     @Override
     public void run() {
+                    /*AuthenticatedUser authenticatedUser = _userService.AuthenticateUser(_person);
         try {
-            AuthenticatedUser authenticatedUser = _userService.AuthenticateUser(_person);
             if(authenticatedUser.getValidation().isSuccess()){
                 c.callBackSuccess(authenticatedUser.getUser().getUserID());
             }else{
@@ -29,6 +31,14 @@ public class AuthenticateThread extends Thread{
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
+        }*/
+        try {
+            _userService.TryGetApi();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+
     }
 }

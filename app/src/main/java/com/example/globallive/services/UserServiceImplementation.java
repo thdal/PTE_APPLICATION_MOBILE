@@ -1,16 +1,23 @@
 package com.example.globallive.services;
 
+import android.util.Log;
+
 import com.example.globallive.entities.AuthenticatedUser;
 import com.example.globallive.entities.Person;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.List;
 
 public class UserServiceImplementation implements IUserService {
-    private String _baseUrl = "https://localhost:3000/";
+    //mettre son ip local, localhost pose pb
+    private String _baseUrl = "http://192.168.0.25:3000";
     private String _registerEndpoint = "api/create";
     private String _authenticateEndpoint = "api/login";
 
@@ -40,5 +47,15 @@ public class UserServiceImplementation implements IUserService {
             return return_value;
         }
         return null;
+    }
+
+    public void TryGetApi() throws IOException, JSONException {
+        String json = ConnectionUtils.GET(this._baseUrl+"/api/users");
+
+
+        JSONArray array = new JSONArray(json.toString());
+        ObjectMapper mapper = new ObjectMapper();
+        String return_value = mapper.readValue(String.valueOf(array), new TypeReference<String>(){});
+        Log.d("USERSERVICE", return_value.toString());
     }
 }
