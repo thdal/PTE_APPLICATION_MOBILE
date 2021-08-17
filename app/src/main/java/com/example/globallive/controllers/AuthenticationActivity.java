@@ -73,11 +73,12 @@ public class AuthenticationActivity extends MainActivity implements View.OnClick
     }
 
     @Override
-    public void callBackSuccess(int userID) {
+    public void callBackSuccess(int userId) {
         _mainHandler.post(new Runnable() {
             @Override
             public void run() {
-                HomeActivity.displayActivity(com.example.globallive.controllers.AuthenticationActivity.this);
+                HomeActivity.displayActivity(AuthenticationActivity.this, userId, "");
+                //HomeActivity.displayActivity(com.example.globallive.controllers.AuthenticationActivity.this);
             }
         });
     }

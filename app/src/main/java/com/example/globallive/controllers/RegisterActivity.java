@@ -68,11 +68,11 @@ public class RegisterActivity extends MainActivity implements View.OnClickListen
     }
 
     @Override
-    public void callBackSuccess(int userID) {
+    public void callBackSuccess(int userId) {
         _mainHandler.post(new Runnable() {
             @Override
             public void run() {
-                HomeActivity.displayActivity(com.example.globallive.controllers.RegisterActivity.this);
+                HomeActivity.displayActivity(RegisterActivity.this, userId, "");
             }
         });
 
