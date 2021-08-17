@@ -40,7 +40,7 @@ public class HomeActivity extends MainActivity implements View.OnClickListener, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        setTitle("Acceuil");
+        setTitle("Accueil");
 
         this._eventService = new EventServiceImplementation();
         this._recyclerView=findViewById(R.id.recyclerView);
