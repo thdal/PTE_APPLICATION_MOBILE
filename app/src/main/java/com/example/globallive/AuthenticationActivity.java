@@ -7,12 +7,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-/*import com.example.globallive.OperationSuccess;
-import com.example.globallive.Person;
-import com.example.globallive.IUserService;
-import com.example.globallive.UserServiceImplementation;
-import com.example.globallive.AuthenticateThread;
-import com.example.globallive.IAuthenticateActivityCallback;*/
+import com.example.globallive.entities.OperationSuccess;
+import com.example.globallive.entities.Person;
+import com.example.globallive.services.IUserService;
+import com.example.globallive.services.UserServiceImplementation;
+import com.example.globallive.threads.AuthenticateThread;
+import com.example.globallive.threads.IAuthenticateActivityCallback;
 
 public class AuthenticationActivity extends MainActivity implements View.OnClickListener /*, IAuthenticateActivityCallback */{
     Button authenticationButton;

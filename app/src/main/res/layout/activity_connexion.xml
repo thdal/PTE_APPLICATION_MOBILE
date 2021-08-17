@@ -73,5 +73,5 @@
         android:layout_gravity="center"
         android:backgroundTint="@android:color/holo_blue_light"
         android:textColor="@color/black"
-        android:text="Se Connecter en tant qu'invité"  />
+        android:text="Se Connecter en tant que visiteur"  />
 </LinearLayout>
