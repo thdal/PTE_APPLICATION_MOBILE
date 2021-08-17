@@ -1,4 +1,4 @@
-package com.example.globallive;
+package com.example.globallive.controllers;
 
 import android.app.Application;
 

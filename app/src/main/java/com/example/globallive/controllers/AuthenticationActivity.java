@@ -1,4 +1,4 @@
-package com.example.globallive;
+package com.example.globallive.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,8 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.globallive.R;
 import com.example.globallive.entities.OperationSuccess;
-import com.example.globallive.entities.Person;
+import com.example.globallive.entities.User;
 import com.example.globallive.services.IUserService;
 import com.example.globallive.services.UserServiceImplementation;
 import com.example.globallive.threads.AuthenticateThread;
@@ -21,12 +22,12 @@ public class AuthenticationActivity extends MainActivity implements View.OnClick
     Button inviteButton;
     AuthenticateThread _thread;
     private IUserService _userService;
-   // private OperationSuccess _authenticationSuccess;
+    private OperationSuccess _authenticationSuccess;
 
     private Handler _mainHandler = new Handler();
 
     public static void displayActivity(MainActivity activity){
-        Intent intent = new Intent(activity, com.example.globallive.AuthenticationActivity.class);
+        Intent intent = new Intent(activity, AuthenticationActivity.class);
         activity.startActivity(intent);
     }
 
@@ -36,7 +37,7 @@ public class AuthenticationActivity extends MainActivity implements View.OnClick
         setTitle("Authenticate");
 
         _userService = new UserServiceImplementation();
-       // _authenticationSuccess = null;
+        _authenticationSuccess = null;
 
         authenticationButton = findViewById(R.id.seConnecter);
         registerTextView = findViewById(R.id.inscrire);
@@ -49,17 +50,16 @@ public class AuthenticationActivity extends MainActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.seConnecter:
-                TextView username =  findViewById(R.id.identifiant);
+                TextView username = findViewById(R.id.identifiant);
                 TextView password = findViewById(R.id.mot_de_passe);
 
-               Person person = new Person();
-                person.setUsername(username.getText().toString());
-                person.setPassword(password.getText().toString());
+                User user = new User();
+                user.setEmail(username.getText().toString());
+                user.setPassword(password.getText().toString());
 
 
-                _thread = new AuthenticateThread(this, person, _userService);
+                _thread = new AuthenticateThread(this, user, _userService);
                 _thread.start();
-                Log.d("SeConnecter","se connecter s'execute");
                 break;
             case R.id.inscrire:
                 Intent i = new Intent(this, RegisterActivity.class);
@@ -78,7 +78,7 @@ public class AuthenticationActivity extends MainActivity implements View.OnClick
         _mainHandler.post(new Runnable() {
             @Override
             public void run() {
-                //HomeActivity.displayActivity(com.example.globallive.AuthenticationActivity.this);
+                HomeActivity.displayActivity(com.example.globallive.controllers.AuthenticationActivity.this);
             }
         });
     }

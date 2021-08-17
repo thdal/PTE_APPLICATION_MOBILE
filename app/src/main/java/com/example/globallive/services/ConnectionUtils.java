@@ -1,5 +1,10 @@
 package com.example.globallive.services;
 
+import android.util.Log;
+
+import com.example.globallive.entities.AuthenticatedUser;
+import com.example.globallive.entities.User;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,31 +31,24 @@ public class ConnectionUtils {
         }
     }
 
-    public static JSONObject POST(String path, String jsonBody) throws IOException {
-        URL url = new URL (path);
-        HttpURLConnection con = (HttpURLConnection)url.openConnection();
-        con.setRequestMethod("POST");
-        con.setRequestProperty("Content-Type", "application/json; utf-8");
-        con.setRequestProperty("Accept", "application/json");
-
-        con.setDoOutput(true);
-
-        try(OutputStream os = con.getOutputStream()) {
-            byte[] input = jsonBody.getBytes("utf-8");
-            os.write(input, 0, input.length);
-        }
-
-        try(BufferedReader br = new BufferedReader(
-                new InputStreamReader(con.getInputStream(), "utf-8"))) {
-            StringBuilder response = new StringBuilder();
-            String responseLine = null;
-            while ((responseLine = br.readLine()) != null) {
-                response.append(responseLine.trim());
+    public static String POST(String path, String jsonBody) throws IOException {
+        try {
+            URL url = new URL(path);
+            byte[] postDataBytes = jsonBody.toString().getBytes("UTF-8");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+            conn.setDoOutput(true);
+            conn.getOutputStream().write(postDataBytes);
+            Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+            StringBuilder sb = new StringBuilder();
+            for (int c; (c = in.read()) >= 0; ) {
+                sb.append((char) c);
             }
-            JSONObject return_value = new JSONObject(response.toString());
-            return return_value;
-        } catch (JSONException e) {
-            e.printStackTrace();
+            return sb.toString();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
         return null;
     }
@@ -64,3 +62,5 @@ public class ConnectionUtils {
         return sb.toString();
     }
 }
+
+

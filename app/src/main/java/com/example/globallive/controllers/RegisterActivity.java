@@ -1,10 +1,12 @@
-package com.example.globallive;
+package com.example.globallive.controllers;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.globallive.R;
 
 /*import com.example.globallive.OperationSuccess;
 import com.example.globallive.Person;
@@ -56,7 +58,7 @@ public class RegisterActivity extends MainActivity implements View.OnClickListen
                 _thread.start();
                 break;*/
             case R.id.DejaClient:
-                AuthenticationActivity.displayActivity(com.example.globallive.RegisterActivity.this);
+                AuthenticationActivity.displayActivity(RegisterActivity.this);
                 break;
         }
     }
@@ -66,7 +68,7 @@ public class RegisterActivity extends MainActivity implements View.OnClickListen
         _mainHandler.post(new Runnable() {
             @Override
             public void run() {
-                HomeActivity.displayActivity(com.example.globallive.RegisterActivity.this);
+                HomeActivity.displayActivity(com.example.globallive.controllers.RegisterActivity.this);
             }
         });
 

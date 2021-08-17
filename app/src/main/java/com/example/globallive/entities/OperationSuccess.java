@@ -4,6 +4,11 @@ public class OperationSuccess {
     private boolean Success;
     private String Message;
 
+    public OperationSuccess(boolean success, String message) {
+        Success = success;
+        Message = message;
+    }
+
     public boolean isSuccess() {
         return Success;
     }

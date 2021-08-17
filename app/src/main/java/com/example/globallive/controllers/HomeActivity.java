@@ -1,8 +1,10 @@
-package com.example.globallive;
+package com.example.globallive.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import com.example.globallive.R;
 
 public class HomeActivity extends MainActivity implements View.OnClickListener {
 
@@ -17,7 +19,7 @@ public class HomeActivity extends MainActivity implements View.OnClickListener {
         setContentView(R.layout.activity_home);
         setTitle("Acceuil");
 
-     //   findViewById(R.id.buttonGroupes).setOnClickListener(this);
+        //findViewById(R.id.buttonGroupes).setOnClickListener(this);
        // findViewById(R.id.buttonCategorie).setOnClickListener(this);
     }
 

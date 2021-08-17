@@ -3,7 +3,7 @@ package com.example.globallive.services;
 import android.util.Log;
 
 import com.example.globallive.entities.AuthenticatedUser;
-import com.example.globallive.entities.Person;
+import com.example.globallive.entities.OperationSuccess;
 import com.example.globallive.entities.User;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,20 +15,21 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
+
+
 
 public class UserServiceImplementation implements IUserService {
     //mettre son ip local, localhost pose pb
     private String _baseUrl = "http://192.168.0.25:3000";
-    private String _registerEndpoint = "api/create";
-    private String _authenticateEndpoint = "api/login";
+    private String _registerEndpoint = "/api/create";
+    private String _authenticateEndpoint = "/api/login";
 
-    public AuthenticatedUser RegisterUser(Person person) throws IOException {
+    public AuthenticatedUser RegisterUser(User user) throws IOException {
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        String json = ow.writeValueAsString(person);
+        String json = ow.writeValueAsString(user);
 
-        JSONObject response = ConnectionUtils.POST(this._baseUrl + this._registerEndpoint, json);
-
+        //JSONObject response = ConnectionUtils.POST(this._baseUrl + this._registerEndpoint, json);
+String response = null;
         if(response != null && response.length() > 0){
             ObjectMapper mapper = new ObjectMapper();
             AuthenticatedUser return_value = mapper.readValue(response.toString(), AuthenticatedUser.class);
@@ -37,18 +38,21 @@ public class UserServiceImplementation implements IUserService {
         return null;
     }
 
-    public AuthenticatedUser AuthenticateUser(Person person) throws IOException {
+    public AuthenticatedUser AuthenticateUser(User user) throws IOException {
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        String json = ow.writeValueAsString(person);
-
-        JSONObject response = ConnectionUtils.POST(this._baseUrl + this._authenticateEndpoint, json);
-
+        String json = ow.writeValueAsString(user);
+        String response = ConnectionUtils.POST(this._baseUrl + this._authenticateEndpoint, json);
         if(response != null && response.length() > 0){
             ObjectMapper mapper = new ObjectMapper();
-            AuthenticatedUser return_value = mapper.readValue(response.toString(), AuthenticatedUser.class);
+            User userFound = mapper.readValue(response.toString(), User.class);
+            OperationSuccess operationSuccess = new OperationSuccess(true, null);
+            AuthenticatedUser return_value = new AuthenticatedUser(userFound, operationSuccess);
+            return return_value;
+        }else{
+            OperationSuccess operationSuccess = new OperationSuccess(false, "E-mail ou password invalide");
+            AuthenticatedUser return_value = new AuthenticatedUser(null, operationSuccess);
             return return_value;
         }
-        return null;
     }
 
     public void TryGetApi() throws IOException, JSONException {
@@ -60,4 +64,6 @@ public class UserServiceImplementation implements IUserService {
         List<User> return_value = mapper.readValue(String.valueOf(array), new TypeReference<List<User>>(){});
         Log.d("USERSERVICE", return_value.toString());
     }
+
+
 }

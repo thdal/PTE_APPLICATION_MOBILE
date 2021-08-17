@@ -1,14 +1,19 @@
 package com.example.globallive.entities;
 
 public class AuthenticatedUser {
-    private Person User;
+    private User User;
     private OperationSuccess Validation;
 
-    public Person getUser() {
+    public AuthenticatedUser(User user, OperationSuccess Validation){
+        this.User = user;
+        this.Validation = Validation;
+    }
+
+    public User getUser() {
         return User;
     }
 
-    public void setUser(Person user) {
+    public void setUser(User user) {
         User = user;
     }
 

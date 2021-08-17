@@ -14,11 +14,11 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.GlobalLive">
 
-        <activity android:name=".HomeActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".MainActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity android:name=".AuthenticationActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".RegisterActivity"  android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity android:name=".SplashActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity android:name=".controllers.HomeActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".controllers.MainActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".controllers.AuthenticationActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".controllers.RegisterActivity"  android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".controllers.SplashActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
