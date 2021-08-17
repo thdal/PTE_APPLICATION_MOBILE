@@ -22,7 +22,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:textAlignment="center"
-        android:hint="Username" />
+        android:hint="E-mail" />
 
     <EditText
         android:id="@+id/mot_de_passe"

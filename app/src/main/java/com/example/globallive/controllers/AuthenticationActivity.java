@@ -50,11 +50,11 @@ public class AuthenticationActivity extends MainActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.seConnecter:
-                TextView username = findViewById(R.id.identifiant);
+                TextView email = findViewById(R.id.identifiant);
                 TextView password = findViewById(R.id.mot_de_passe);
 
                 User user = new User();
-                user.setEmail(username.getText().toString());
+                user.setEmail(email.getText().toString());
                 user.setPassword(password.getText().toString());
 
 
@@ -65,7 +65,6 @@ public class AuthenticationActivity extends MainActivity implements View.OnClick
                 Intent i = new Intent(this, RegisterActivity.class);
                 startActivity(i);
                 break;
-
             case R.id.invite:
                 Intent a = new Intent(this, HomeActivity.class);
                 startActivity(a);

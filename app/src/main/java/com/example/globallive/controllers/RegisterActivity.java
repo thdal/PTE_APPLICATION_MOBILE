@@ -8,18 +8,18 @@ import android.widget.TextView;
 
 import com.example.globallive.R;
 
-/*import com.example.globallive.OperationSuccess;
-import com.example.globallive.Person;
-import com.example.globallive.IUserService;
-import com.example.globallive.UserServiceImplementation;
-import com.example.globallive.IRegisterActivityCallback;
-import com.example.globallive.RegisterThread;*/
+import com.example.globallive.entities.OperationSuccess;
+import com.example.globallive.entities.User;
+import com.example.globallive.services.IUserService;
+import com.example.globallive.services.UserServiceImplementation;
+import com.example.globallive.threads.IRegisterActivityCallback;
+import com.example.globallive.threads.RegisterThread;
 
-public class RegisterActivity extends MainActivity implements View.OnClickListener /*, IRegisterActivityCallback */{
+public class RegisterActivity extends MainActivity implements View.OnClickListener , IRegisterActivityCallback {
     private Button registerButton;
-   // private IUserService _userService;
-   // private OperationSuccess _registrationSuccess;
-   // private RegisterThread _thread;
+    private IUserService _userService;
+    private OperationSuccess _registrationSuccess;
+    private RegisterThread _thread;
 
     private Handler _mainHandler = new Handler();
 
@@ -32,8 +32,8 @@ public class RegisterActivity extends MainActivity implements View.OnClickListen
         registerButton = findViewById(R.id.sinscrire);
         registerButton.setOnClickListener(this);
 
-       // this._userService = new UserServiceImplementation();
-       // this._registrationSuccess = null;
+        this._userService = new UserServiceImplementation();
+        this._registrationSuccess = null;
     }
 
 
@@ -45,25 +45,29 @@ public class RegisterActivity extends MainActivity implements View.OnClickListen
 
                 TextView firstname =  findViewById(R.id.Firstname);
                 TextView lastname = findViewById(R.id.Lastname);
-                TextView username =  findViewById(R.id.Username);
+                TextView email =  findViewById(R.id.Email);
                 TextView password = findViewById(R.id.Password);
 
-              /*  Person person = new Person();
-                person.setFirstname(firstname.getText().toString());
-                person.setLastname(lastname.getText().toString());
-                person.setUsername(username.getText().toString());
-                person.setPassword(password.getText().toString());
+                User user = new User();
+                user.setFirstName(firstname.getText().toString());
+                user.setLastName(lastname.getText().toString());
+                user.setEmail(email.getText().toString());
+                user.setPassword(password.getText().toString());
+                user.setGenre_id(2);//Homme
+                user.setProfile_id(1);//Organisateur
+                user.setUserImg(0); // false pas d'image
+                user.setIsBanned(0); //false
 
-                _thread = new RegisterThread(this, person, _userService);
+                _thread = new RegisterThread(this, user, _userService);
                 _thread.start();
-                break;*/
+                break;
             case R.id.DejaClient:
                 AuthenticationActivity.displayActivity(RegisterActivity.this);
                 break;
         }
     }
 
-   /* @Override
+    @Override
     public void callBackSuccess(int userID) {
         _mainHandler.post(new Runnable() {
             @Override
@@ -72,9 +76,9 @@ public class RegisterActivity extends MainActivity implements View.OnClickListen
             }
         });
 
-    }*/
+    }
 
-  /*  @Override
+    @Override
     public void callBackFail(String message) {
         _mainHandler.post(new Runnable() {
             @Override
@@ -83,5 +87,5 @@ public class RegisterActivity extends MainActivity implements View.OnClickListen
                 _errorDisplay.setText(message);
             }
         });
-    }*/
+    }
 }

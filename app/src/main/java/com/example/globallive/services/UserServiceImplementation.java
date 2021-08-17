@@ -21,21 +21,26 @@ import java.util.List;
 public class UserServiceImplementation implements IUserService {
     //mettre son ip local, localhost pose pb
     private String _baseUrl = "http://192.168.0.25:3000";
-    private String _registerEndpoint = "/api/create";
+    private String _registerEndpoint = "/api/users";
     private String _authenticateEndpoint = "/api/login";
 
     public AuthenticatedUser RegisterUser(User user) throws IOException {
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         String json = ow.writeValueAsString(user);
 
-        //JSONObject response = ConnectionUtils.POST(this._baseUrl + this._registerEndpoint, json);
-String response = null;
+        String response = ConnectionUtils.POST(this._baseUrl + this._registerEndpoint, json);
+
         if(response != null && response.length() > 0){
             ObjectMapper mapper = new ObjectMapper();
-            AuthenticatedUser return_value = mapper.readValue(response.toString(), AuthenticatedUser.class);
+            User userFound = mapper.readValue(response.toString(), User.class);
+            OperationSuccess operationSuccess = new OperationSuccess(true, null);
+            AuthenticatedUser return_value = new AuthenticatedUser(userFound, operationSuccess);
+            return return_value;
+        }else{
+            OperationSuccess operationSuccess = new OperationSuccess(false, "Inscription impossible");
+            AuthenticatedUser return_value = new AuthenticatedUser(null, operationSuccess);
             return return_value;
         }
-        return null;
     }
 
     public AuthenticatedUser AuthenticateUser(User user) throws IOException {
