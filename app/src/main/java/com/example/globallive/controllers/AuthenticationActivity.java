@@ -3,7 +3,6 @@ package com.example.globallive.controllers;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,6 +12,7 @@ import com.example.globallive.entities.OperationSuccess;
 import com.example.globallive.entities.User;
 import com.example.globallive.services.IUserService;
 import com.example.globallive.services.UserServiceImplementation;
+import com.example.globallive.tabs.HomeActivity;
 import com.example.globallive.threads.AuthenticateThread;
 import com.example.globallive.threads.IAuthenticateActivityCallback;
 
@@ -45,6 +45,11 @@ public class AuthenticationActivity extends MainActivity implements View.OnClick
         authenticationButton.setOnClickListener(this);
         registerTextView.setOnClickListener(this);
         inviteButton.setOnClickListener(this);
+
+        TextView email = findViewById(R.id.identifiant);
+        TextView password = findViewById(R.id.mot_de_passe);
+        email.setText("testorga@epsi.fr");
+        password.setText("tortue");
     }
     @Override
     public void onClick(View v) {

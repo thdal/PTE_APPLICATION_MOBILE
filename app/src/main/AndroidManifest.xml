@@ -14,7 +14,7 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.GlobalLive">
 
-        <activity android:name=".controllers.HomeActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".tabs.HomeActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".controllers.MainActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".controllers.AuthenticationActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".controllers.RegisterActivity"  android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>

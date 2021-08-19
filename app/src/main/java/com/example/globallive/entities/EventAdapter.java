@@ -9,15 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.globallive.R;
-import com.example.globallive.controllers.HomeActivity;
+import com.example.globallive.tabs.EventListFragment;
 
 import java.util.ArrayList;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
     private ArrayList<Event> _events;
-    private HomeActivity activity;
+    private EventListFragment activity;
 
-    public EventAdapter(HomeActivity activity, ArrayList<Event> events){
+    public EventAdapter(EventListFragment activity, ArrayList<Event> events){
         this.activity = activity;
         this._events = events;
     }

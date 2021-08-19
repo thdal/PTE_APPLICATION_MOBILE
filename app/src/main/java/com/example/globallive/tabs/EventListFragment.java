@@ -1,9 +1,14 @@
-package com.example.globallive.controllers;
+package com.example.globallive.tabs;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.globallive.R;
 import com.example.globallive.entities.Event;
@@ -13,47 +18,48 @@ import com.example.globallive.services.IEventService;
 import com.example.globallive.threads.HomeThread;
 import com.example.globallive.threads.IHomeActivityResult;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends MainActivity implements View.OnClickListener, IHomeActivityResult {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class EventListFragment extends Fragment implements  View.OnClickListener, IHomeActivityResult {
 
+    //add
     private IEventService _eventService;
     private int _userId;
     private HomeThread _thread;
     private RecyclerView _recyclerView;
     private EventAdapter _eventAdapter;
-
     private Handler _mainHandler = new Handler();
 
-    public static void displayActivity(MainActivity activity, int currentUser, String msg){
-        Intent intent = new Intent(activity,HomeActivity.class);
-        intent.putExtra("CURRENT_USER_ID", currentUser);
-        intent.putExtra("MESSAGE", msg);
-        activity.startActivity(intent);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        setTitle("Accueil");
-
+    public EventListFragment() {
+        // Required empty public constructor
         this._eventService = new EventServiceImplementation();
-        this._recyclerView=findViewById(R.id.recyclerView);
-        this._userId = getIntent().getIntExtra("CURRENT_USER_ID", 0);
+        //this._userId = getActivity().getIntent().getIntExtra("CURRENT_USER_ID", 0);
 
 
         _thread = new HomeThread(this, this._userId, _eventService);
         _thread.start();
-
-
-        //findViewById(R.id.buttonGroupes).setOnClickListener(this);
-       // findViewById(R.id.buttonCategorie).setOnClickListener(this);
     }
+
+
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_event_list, container, false);
+        this._recyclerView=view.findViewById(R.id.recyclerView);
+
+        return view;
+    }
+
+
+
+
 
     @Override
     public void onClick(View v) {
@@ -70,7 +76,7 @@ public class HomeActivity extends MainActivity implements View.OnClickListener, 
 
     private void DisplayMyEvents(List<Event> events){
         _eventAdapter = new EventAdapter(this, (ArrayList<Event>) events);
-        _recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        _recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         _recyclerView.setAdapter(_eventAdapter);
         // Display myEvents
         // TODO Front : Display list of Events
@@ -86,7 +92,3 @@ public class HomeActivity extends MainActivity implements View.OnClickListener, 
         });
     }
 }
-
-
-
-
