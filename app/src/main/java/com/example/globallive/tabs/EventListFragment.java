@@ -43,10 +43,6 @@ public class EventListFragment extends Fragment implements  View.OnClickListener
         _thread = new HomeThread(this, this._userId, _eventService);
         _thread.start();
     }
-
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,11 +52,6 @@ public class EventListFragment extends Fragment implements  View.OnClickListener
 
         return view;
     }
-
-
-
-
-
     @Override
     public void onClick(View v) {
 
