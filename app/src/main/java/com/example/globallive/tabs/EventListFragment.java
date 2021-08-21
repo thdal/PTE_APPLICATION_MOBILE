@@ -1,5 +1,6 @@
 package com.example.globallive.tabs;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -11,20 +12,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.globallive.R;
-import com.example.globallive.entities.Event;
+import com.example.globallive.controllers.EventViewActivity;
 import com.example.globallive.entities.EventAdapter;
 import com.example.globallive.services.EventServiceImplementation;
 import com.example.globallive.services.IEventService;
 import com.example.globallive.threads.HomeThread;
 import com.example.globallive.threads.IHomeActivityResult;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EventListFragment extends Fragment implements  View.OnClickListener, IHomeActivityResult {
+public class EventListFragment extends Fragment implements  View.OnClickListener, IHomeActivityResult, EventAdapter.OnEventListener {
 
     //add
     private IEventService _eventService;
@@ -33,13 +35,12 @@ public class EventListFragment extends Fragment implements  View.OnClickListener
     private RecyclerView _recyclerView;
     private EventAdapter _eventAdapter;
     private Handler _mainHandler = new Handler();
+    private ArrayList<com.example.globallive.entities.Event> _events = new ArrayList<>();
 
     public EventListFragment() {
         // Required empty public constructor
         this._eventService = new EventServiceImplementation();
         //this._userId = getActivity().getIntent().getIntExtra("CURRENT_USER_ID", 0);
-
-
         _thread = new HomeThread(this, this._userId, _eventService);
         _thread.start();
     }
@@ -65,8 +66,9 @@ public class EventListFragment extends Fragment implements  View.OnClickListener
         }
     }
 
-    private void DisplayMyEvents(List<Event> events){
-        _eventAdapter = new EventAdapter(this, (ArrayList<Event>) events);
+    private void DisplayMyEvents(List<com.example.globallive.entities.Event> events){
+        this._events = (ArrayList<com.example.globallive.entities.Event>) events;
+        _eventAdapter = new EventAdapter(this, (ArrayList<com.example.globallive.entities.Event>) events, this);
         _recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         _recyclerView.setAdapter(_eventAdapter);
         // Display myEvents
@@ -74,12 +76,19 @@ public class EventListFragment extends Fragment implements  View.OnClickListener
     }
 
     @Override
-    public void callback(List<Event> events) {
+    public void callback(List<com.example.globallive.entities.Event> events) {
         _mainHandler.post(new Runnable() {
             @Override
             public void run() {
                 DisplayMyEvents(events);
             }
         });
+    }
+
+    @Override
+    public void onEventClick(int position) {
+        Intent intent = new Intent(getActivity(), EventViewActivity.class);
+        intent.putExtra("selected_event", (Serializable) _events.get(position) );
+        startActivity(intent);
     }
 }

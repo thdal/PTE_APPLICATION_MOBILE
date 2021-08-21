@@ -1,6 +1,5 @@
 package com.example.globallive.entities;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,16 +16,17 @@ import com.squareup.picasso.Picasso;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
     private ArrayList<Event> _events;
     private EventListFragment activity;
+    private OnEventListener mOnEventListener;
 
-    public EventAdapter(EventListFragment activity, ArrayList<Event> events){
+    public EventAdapter(EventListFragment activity, ArrayList<Event> events, OnEventListener onEventListener){
         this.activity = activity;
         this._events = events;
+        this.mOnEventListener = onEventListener;
     }
 
     @NonNull
@@ -35,7 +35,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         // Create a new view, which defines the UI of the list item
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.layout_event, viewGroup, false);
-        return new ViewHolder(view);
+        return new ViewHolder(view, mOnEventListener);
     }
 
     @Override
@@ -49,13 +49,12 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         String strDate = dateFormat.format(date);
         //On passe la date à la vue
         holder.getEventDate().setText(strDate);
-        //On met une image perso
         String imgUrl = "";
         //Si notre événément a une image perso on va la chercher sur l'API avec le bon chemin
         //Sinon dans le dossier drawable l'image par défaut
         if(event.isEventImg()){
             imgUrl = holder.itemView.getContext().getString(R.string.api_url) + "/eventId"+event.getId()+"/eventImg.jpg";
-        Picasso.get().load(imgUrl).into(holder.getEventImage());
+            Picasso.get().load(imgUrl).into(holder.getEventImage());
         }
     }
 
@@ -64,14 +63,19 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         return _events.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView eventName;
         private final TextView eventDescription;
         private final TextView eventDate;
         private final ImageView eventImage;
 
-        public ViewHolder(View view) {
+        OnEventListener mOnEventListener;
+
+        public ViewHolder(View view, OnEventListener OnEventListener) {
             super(view);
+            //Le click sur un élément de la liste
+            mOnEventListener = OnEventListener;
+            view.setOnClickListener(this);
             // Define click listener for the ViewHolder's View
             eventName = (TextView) view.findViewById(R.id.textViewEventName);
             eventDescription = (TextView) view.findViewById(R.id.textViewEventDescription);
@@ -93,5 +97,14 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             return eventImage;
         }
 
+        @Override
+        public void onClick(View view) {
+            mOnEventListener.onEventClick(getAdapterPosition());
+        }
+
+
     }
+        public interface OnEventListener{
+            void onEventClick(int position);
+        }
 }

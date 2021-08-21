@@ -10,9 +10,18 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/bluegloballive"
+        android:theme="@style/ToolbarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageViewDisconnect"
+            android:layout_width="50sp"
+            android:layout_height="50sp"
+            android:src="@drawable/ic_baseline_exit_to_app_24"
+            android:layout_gravity="right"></ImageView>
+    </androidx.appcompat.widget.Toolbar>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tablayout"

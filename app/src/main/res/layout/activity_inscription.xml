@@ -79,7 +79,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:backgroundTint="@android:color/holo_blue_light"
+        android:backgroundTint="@color/bluegloballive"
         android:textColor="@color/black"
         android:text="S'inscrire" />
 
@@ -88,7 +88,7 @@
         android:layout_width="270dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:backgroundTint="@android:color/holo_blue_light"
+        android:backgroundTint="@color/bluegloballive"
         android:textColor="@color/black"
         android:text="Déja Client ? Se Connecter" />
 

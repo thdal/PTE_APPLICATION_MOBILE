@@ -3,8 +3,10 @@ package com.example.globallive.tabs;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.globallive.R;
@@ -35,7 +37,7 @@ import java.util.List;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends MainActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
     //ADD
@@ -44,13 +46,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
     ViewPager pager;
     TabLayout mTabLayout;
-    TabItem firstItem,secondItem,thirdItem,fourthItem;
+    TabItem firstItem,secondItem;
     PagerAdapter adapter;
+    private int userID;
 
     private Handler _mainHandler = new Handler();
 
     public static void displayActivity(MainActivity activity, int currentUser, String msg){
         Intent intent = new Intent(activity,HomeActivity.class);
+        Log.d("CURRENTUSERRRRRR", String.valueOf(currentUser));
         intent.putExtra("CURRENT_USER_ID", currentUser);
         intent.putExtra("MESSAGE", msg);
         activity.startActivity(intent);
@@ -60,7 +64,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        //Toute cette partie jusqu'à la fin de la fonction sert à manipuler nos fragments
+        this.userID = getIntent().getIntExtra("CURRENT_USER_ID", 0);
+        //Bouton de deconnexion du menu top
+        ImageView imageViewDisconnect = findViewById(R.id.imageViewDisconnect);//deconnexion
+        imageViewDisconnect.setOnClickListener(new View.OnClickListener() {//deconnexion
+            public void onClick(View v) {//deconnexion
+                Intent homeIntent = new Intent(Intent.ACTION_MAIN); //deconnexion
+                homeIntent.addCategory( Intent.CATEGORY_HOME );//deconnexion
+                homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//deconnexion
+                startActivity(homeIntent);//deconnexion
+            }//deconnexion
+        });
+        //Toute cette partie jusqu'à la fin de la fonction sert à manipuler nos fragments (Navbar)
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -79,12 +94,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         toggle.setDrawerIndicatorEnabled(true);
         toggle.syncState();
 
-        adapter = new PagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,mTabLayout.getTabCount());
+        adapter = new PagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,mTabLayout.getTabCount(), userID);
         pager.setAdapter(adapter);
 
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                if(tab.getPosition() == 1){
+                    setTitle("Ajouter un événement");
+                }
                 pager.setCurrentItem(tab.getPosition());
 
             }
@@ -101,10 +119,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
 
         pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
-
-
-        //findViewById(R.id.buttonGroupes).setOnClickListener(this);
-       // findViewById(R.id.buttonCategorie).setOnClickListener(this);
     }
 
     @Override

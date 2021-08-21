@@ -15,13 +15,14 @@
 
             <TextView
                 android:id="@+id/textViewEventName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
                 android:layout_weight=".70"
                 android:layout_centerVertical="true"
                 android:layout_margin="7sp"
                 android:padding="7sp"
                 android:text="Event name"
+                android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="36sp"
                 android:textStyle="bold" />

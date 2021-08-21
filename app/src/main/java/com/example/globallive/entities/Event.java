@@ -1,10 +1,14 @@
 package com.example.globallive.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class Event {
+public class Event implements Serializable {
     public int id;
     private String eventName;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date eventDate;
     private String eventLink;
     private String eventAddress;
