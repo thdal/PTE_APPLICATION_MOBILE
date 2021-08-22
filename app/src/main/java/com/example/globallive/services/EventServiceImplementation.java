@@ -22,6 +22,10 @@ public class EventServiceImplementation implements IEventService {
     private String _baseUrl = "http://192.168.0.25:3000";
     private String _postEventEndpoint = "/api/events";
     private String _getEventsEndpoint = "/api/events";
+    private String _getEventsWithTypeEndpoint = "/api/events/type";
+    private String _getEventsWithCanalEndpoint = "/api/events/canal";
+    private String _getEventsOfTheDay = "/api/events/oftheday";
+
     private String _getEventTypes ="/api/eventTypes";
     private String _getEventCanaux ="/api/eventCanals";
 
@@ -44,8 +48,38 @@ public class EventServiceImplementation implements IEventService {
 
     //Récupére tous nos événéments
     @Override
-    public List<Event> GetEvents(int userId) throws IOException, JSONException {
+    public List<Event> GetEvents() throws IOException, JSONException {
         String json = ConnectionUtils.GET(this._baseUrl + _getEventsEndpoint);
+        JSONArray array = new JSONArray(json.toString());
+        ObjectMapper mapper = new ObjectMapper();
+        List<Event> return_value = mapper.readValue(String.valueOf(array), new TypeReference<List<Event>>(){});
+        return return_value;
+    }
+
+    //Récupére tous nos événéments en fonction de la catégorie
+    @Override
+    public List<Event> GetEventsWithType(int typeID) throws IOException, JSONException {
+        String json = ConnectionUtils.GET(this._baseUrl + _getEventsWithTypeEndpoint+"/"+typeID+"/false");
+        JSONArray array = new JSONArray(json.toString());
+        ObjectMapper mapper = new ObjectMapper();
+        List<Event> return_value = mapper.readValue(String.valueOf(array), new TypeReference<List<Event>>(){});
+        return return_value;
+    }
+
+    //Récupére tous nos événéments en fonction du canal
+    @Override
+    public List<Event> GetEventsWithCanal(int canalID) throws IOException, JSONException {
+        String json = ConnectionUtils.GET(this._baseUrl + _getEventsWithCanalEndpoint+"/"+canalID+"/false");
+        JSONArray array = new JSONArray(json.toString());
+        ObjectMapper mapper = new ObjectMapper();
+        List<Event> return_value = mapper.readValue(String.valueOf(array), new TypeReference<List<Event>>(){});
+        return return_value;
+    }
+
+    //Récupére tous nos événéments
+    @Override
+    public List<Event> GetEventsOfTheDay() throws IOException, JSONException {
+        String json = ConnectionUtils.GET(this._baseUrl + _getEventsOfTheDay);
         JSONArray array = new JSONArray(json.toString());
         ObjectMapper mapper = new ObjectMapper();
         List<Event> return_value = mapper.readValue(String.valueOf(array), new TypeReference<List<Event>>(){});

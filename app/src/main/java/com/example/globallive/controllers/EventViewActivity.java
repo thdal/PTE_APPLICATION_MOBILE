@@ -14,7 +14,7 @@ import com.example.globallive.entities.EventTypes;
 import com.example.globallive.services.EventServiceImplementation;
 import com.example.globallive.services.IEventService;
 import com.example.globallive.threads.EventUtilsThread;
-import com.example.globallive.threads.IEventCallback;
+import com.example.globallive.threads.IEventUtilsCallback;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
@@ -22,7 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class EventViewActivity extends MainActivity implements IEventCallback {
+public class EventViewActivity extends MainActivity implements IEventUtilsCallback {
 
     private Handler _mainHandler = new Handler();
     private int categorieId;

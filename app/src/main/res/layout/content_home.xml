@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/bluegloballive"
-        android:theme="@style/ToolbarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -39,14 +38,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:color="@color/white"
-            android:text="Liste" />
+            android:icon="@drawable/ic_baseline_event_note_24"/>
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/secondItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:color="@color/white"
-            android:text="add" />
+            android:icon="@drawable/ic_baseline_add_circle_outline_24" />
 
 
     </com.google.android.material.tabs.TabLayout>

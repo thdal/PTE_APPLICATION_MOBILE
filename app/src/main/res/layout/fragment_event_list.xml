@@ -6,15 +6,54 @@
     tools:context=".tabs.EventListFragment">
 
     <!-- TODO: Update blank fragment layout -->
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
+            <LinearLayout
+                android:id="@+id/linearLayoutError"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="200sp"
+                    android:layout_height="200sp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/errornotfound"></ImageView>
+                <TextView
+                    android:id="@+id/EventListErrorMsg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="60sp"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    />
+                <TextView
+                    android:id="@+id/EventListSubErrorMsg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="30sp"
+                    android:textAlignment="center"
+                    android:text="Vous pouvez revenir plus tard, ou ajouter un nouvel événément."
+                    />
+
+            </LinearLayout>
+        </ScrollView>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
 
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
 
     </ScrollView>
 

@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item
-        android:id="@+id/menuTab"
-        android:title="Menu Item" />
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Nos deux premiers boutons getAll et getALLOfTheDay -->
+    <group android:id="@+id/grpFirst">
+        <item
+            android:id="@+id/menuTabLabelFirst"
+            android:title="Rechercher"
+            android:enabled="false"/>
+        <item
+            android:id="@+id/menuTabGetlAll"
+            android:title="Tous les événements"
+            android:icon="@drawable/all"/>
+        <item
+            android:id="@+id/menuTabGetAllOfTheDay"
+            android:title="Évenements du jour"
+            android:icon="@drawable/oftheday"/>
+    </group>
+    <!-- On ajoute nos catégories dynamiquement -> HomeActivity -->
+    <group android:id="@+id/grpCategorie">
+    </group>
+    <!-- On ajoute nos canaux dynamiquement -> HomeActivity -->
+    <group android:id="@+id/grpCanaux">
+    </group>
 </menu>

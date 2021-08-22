@@ -11,7 +11,11 @@ import java.util.List;
 
 public interface IEventService {
     void PostEvent(Event event) throws IOException, JSONException;
-    List<Event> GetEvents(int userId) throws IOException, JSONException;
+    List<Event> GetEvents() throws IOException, JSONException;
+    List<Event> GetEventsOfTheDay() throws IOException, JSONException;
+    List<Event> GetEventsWithType(int typeID) throws IOException, JSONException;
+    List<Event> GetEventsWithCanal(int canalID) throws IOException, JSONException;
+    //Utils
     List<EventTypes> GetEventTypes() throws IOException, JSONException;
     List<EventCanaux> GetEventCanaux() throws IOException, JSONException;
     OperationSuccess DeleteEvent(int userId, int eventId) throws IOException;

@@ -11,12 +11,12 @@ import java.io.IOException;
 import java.util.List;
 
 public class EventUtilsThread extends Thread{
-    IEventCallback c;
+    IEventUtilsCallback c;
     User _user;
     IEventService _eventService;
     List<EventTypes> _eventTypes;
 
-    public EventUtilsThread(IEventCallback c, IEventService eventService) {
+    public EventUtilsThread(IEventUtilsCallback c, IEventService eventService) {
         this.c = c;
         this._eventService = eventService;
     }

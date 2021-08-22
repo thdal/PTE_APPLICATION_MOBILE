@@ -3,7 +3,6 @@ package com.example.globallive.tabs;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,28 +16,25 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.example.globallive.R;
+import com.example.globallive.controllers.MainActivity;
 import com.example.globallive.entities.Event;
 import com.example.globallive.entities.EventCanaux;
 import com.example.globallive.entities.EventTypes;
 import com.example.globallive.services.EventServiceImplementation;
 import com.example.globallive.services.IEventService;
 import com.example.globallive.threads.EventUtilsThread;
-import com.example.globallive.threads.IEventCallback;
+import com.example.globallive.threads.IEventUtilsCallback;
 import com.example.globallive.threads.IPostEventCallback;
 import com.example.globallive.threads.PostEventThread;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
-public class EventFormFragment extends Fragment  implements IEventCallback, IPostEventCallback {
+public class EventUtilsFormFragment extends Fragment  implements IEventUtilsCallback, IPostEventCallback {
 
     private EventUtilsThread _thread;
     private PostEventThread _postEventThread;
@@ -56,14 +52,14 @@ public class EventFormFragment extends Fragment  implements IEventCallback, IPos
 
     private Handler _mainHandler = new Handler();
     //Constructor obligatoire dans un fragment
-    public EventFormFragment(int userID) {
+    public EventUtilsFormFragment(int userID) {
         //On init notre service et on l'envoie au thread cela permettra d'afficher
         //dynamiquement les catégories et les canaux, le thread permet un appel non bloquant.
         this.userID = userID;
         this._eventService = new EventServiceImplementation();
         _thread = new EventUtilsThread(this, _eventService);
         _thread.start();
-        IPostEventCallback c = this;
+        c = this;
 
     }
 
@@ -116,8 +112,9 @@ public class EventFormFragment extends Fragment  implements IEventCallback, IPos
                         eventToSend.setEventAddress(eventAddress.getText().toString());
                         eventToSend.setEventDescription(eventDescription.getText().toString());
                         eventToSend.setEventLink(eventLink.getText().toString());
-                        //Parse to date
+                        //On parse la string au format date
                         Date date = new SimpleDateFormat("dd/MM/yyyy").parse(eventDate.getText().toString());
+                        //le modele se charge d'un deuxieme parse au format de la bdd yyyy-MM-dd voir annotation dans le fichier
                         eventToSend.setEventDate(date);
                         eventToSend.setUserId(userID);
                         _postEventThread = new PostEventThread(c, eventToSend, _eventService);
@@ -188,8 +185,7 @@ public class EventFormFragment extends Fragment  implements IEventCallback, IPos
         _mainHandler.post(new Runnable() {
             @Override
             public void run() {
-                Log.d("CallbacksuccesspostEvent", "sucess");
-
+                HomeActivity.displayActivity((MainActivity) getActivity(), userID, "");
             }
         });
     }

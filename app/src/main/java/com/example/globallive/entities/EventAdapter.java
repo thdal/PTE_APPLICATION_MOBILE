@@ -81,9 +81,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             eventDescription = (TextView) view.findViewById(R.id.textViewEventDescription);
             eventDate = (TextView) view.findViewById(R.id.textViewEventDate);
             eventImage = (ImageView) view.findViewById(R.id.imageViewEvent);
-
         }
-
         public TextView getEventName() {
             return eventName;
         }
@@ -101,10 +99,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         public void onClick(View view) {
             mOnEventListener.onEventClick(getAdapterPosition());
         }
-
-
     }
-        public interface OnEventListener{
-            void onEventClick(int position);
-        }
+
+    public interface OnEventListener{
+        void onEventClick(int position);
+    }
 }
