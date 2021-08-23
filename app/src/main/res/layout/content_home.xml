@@ -13,13 +13,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/imageViewDisconnect"
-            android:layout_width="50sp"
-            android:layout_height="50sp"
-            android:src="@drawable/ic_baseline_exit_to_app_24"
-            android:layout_gravity="right"></ImageView>
     </androidx.appcompat.widget.Toolbar>
 
     <com.google.android.material.tabs.TabLayout
@@ -30,21 +23,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         android:background="@color/bluegloballive"
-        app:tabSelectedTextColor="@color/white"
-        app:tabIndicatorColor="@color/white">
+        app:tabSelectedTextColor="@color/black"
+        app:tabIndicatorColor="@color/black"
+        app:tabIconTint="@color/black">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/firstItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:color="@color/white"
+            android:text="Liste"
+            android:color="@color/black"
             android:icon="@drawable/ic_baseline_event_note_24"/>
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/secondItem"
+            android:text="Création"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:color="@color/white"
+            android:color="@color/black"
             android:icon="@drawable/ic_baseline_add_circle_outline_24" />
 
 

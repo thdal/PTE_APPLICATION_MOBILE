@@ -7,25 +7,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.globallive.R;
 import com.example.globallive.controllers.MainActivity;
 import com.example.globallive.entities.Event;
-import com.example.globallive.entities.EventCanaux;
-import com.example.globallive.entities.EventTypes;
+import com.example.globallive.entities.EventCanal;
+import com.example.globallive.entities.EventType;
+import com.example.globallive.entities.User;
 import com.example.globallive.services.EventServiceImplementation;
 import com.example.globallive.services.IEventService;
 import com.example.globallive.threads.EventUtilsThread;
 import com.example.globallive.threads.IEventUtilsCallback;
 import com.example.globallive.threads.IPostEventCallback;
 import com.example.globallive.threads.PostEventThread;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,7 +38,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class EventUtilsFormFragment extends Fragment  implements IEventUtilsCallback, IPostEventCallback {
+public class EventFormFragment extends Fragment  implements IEventUtilsCallback, IPostEventCallback {
 
     private EventUtilsThread _thread;
     private PostEventThread _postEventThread;
@@ -47,15 +51,17 @@ public class EventUtilsFormFragment extends Fragment  implements IEventUtilsCall
     private int lastSelectedYear;
     private int lastSelectedMonth;
     private int lastSelectedDayOfMonth;
+    private User user;
     private int userID;
     private IPostEventCallback c;
 
     private Handler _mainHandler = new Handler();
     //Constructor obligatoire dans un fragment
-    public EventUtilsFormFragment(int userID) {
+    public EventFormFragment(User user) {
         //On init notre service et on l'envoie au thread cela permettra d'afficher
         //dynamiquement les catégories et les canaux, le thread permet un appel non bloquant.
-        this.userID = userID;
+        this.user = user;
+        this.userID = user.getId();
         this._eventService = new EventServiceImplementation();
         _thread = new EventUtilsThread(this, _eventService);
         _thread.start();
@@ -77,9 +83,9 @@ public class EventUtilsFormFragment extends Fragment  implements IEventUtilsCall
             public void onClick(View v)
             {
                 Spinner mySpinnerCat = (Spinner) getActivity().findViewById(R.id.spinnerEventFormCat);
-                EventTypes typeSelected = (EventTypes) mySpinnerCat.getSelectedItem();
-                Spinner mySpinnerCan = (Spinner) getActivity().findViewById(R.id.spinnerEventFormCat);
-                EventTypes canalSelected = (EventTypes) mySpinnerCan.getSelectedItem();
+                EventType typeSelected = (EventType) mySpinnerCat.getSelectedItem();
+                Spinner mySpinnerCan = (Spinner) getActivity().findViewById(R.id.spinnerEventFormCanal);
+                EventCanal canalSelected = (EventCanal) mySpinnerCan.getSelectedItem();
                 TextView _errorDisplay = getActivity().findViewById(R.id.errorEventForm);
                 TextView eventTitle = getActivity().findViewById(R.id.EventFormEventTitle);
                 TextView eventLink = getActivity().findViewById(R.id.EventFormEventLink);
@@ -117,7 +123,7 @@ public class EventUtilsFormFragment extends Fragment  implements IEventUtilsCall
                         //le modele se charge d'un deuxieme parse au format de la bdd yyyy-MM-dd voir annotation dans le fichier
                         eventToSend.setEventDate(date);
                         eventToSend.setUserId(userID);
-                        _postEventThread = new PostEventThread(c, eventToSend, _eventService);
+                        _postEventThread = new PostEventThread(c, eventToSend, _eventService, false);
                         _postEventThread.start();
                     } catch (ParseException e) {
                         e.printStackTrace();
@@ -127,10 +133,11 @@ public class EventUtilsFormFragment extends Fragment  implements IEventUtilsCall
         });
         //Select date
         this.editTextDate = (EditText) view.findViewById(R.id.editText_date);
-        this.buttonDate = (Button) view.findViewById(R.id.button_date);
-        this.buttonDate.setOnClickListener(new View.OnClickListener() {
+        EditText textDate = view.findViewById(R.id.editText_date);
+        textDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // DO STUFF
                 buttonSelectDate();
             }
         });
@@ -143,7 +150,7 @@ public class EventUtilsFormFragment extends Fragment  implements IEventUtilsCall
     }
 
     @Override
-    public void getEventTypesCallback(List<EventTypes> eventTypes){
+    public void getEventTypesCallback(List<EventType> eventTypes){
         _mainHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -151,30 +158,39 @@ public class EventUtilsFormFragment extends Fragment  implements IEventUtilsCall
                 Spinner dropdown = getActivity().findViewById(R.id.spinnerEventFormCat);
                 //create a list of items for the spinner.
                 //Nos objets models avec méthode toString() réécrite
-                ArrayList<EventTypes> dropdownList = new ArrayList<>();
-                for(EventTypes eventType : eventTypes){
+                ArrayList<EventType> dropdownList = new ArrayList<>();
+                for(EventType eventType : eventTypes){
                     dropdownList.add(eventType);
                 }
                 //create an adapter to describe how the items are displayed, adapters are used in several places in android.
                 //There are multiple variations of this, but this is the basic variant.
-                ArrayAdapter<EventTypes> adapter = new ArrayAdapter<EventTypes>(getActivity(), android.R.layout.simple_spinner_dropdown_item, dropdownList);
+                ArrayAdapter<EventType> adapter = new ArrayAdapter<EventType>(getActivity(), android.R.layout.simple_spinner_dropdown_item, dropdownList);
                 //set the spinners adapter to the previously created one.
                 dropdown.setAdapter(adapter);
+
+
+
+                String[] type = new String[] {"Bed-sitter", "Single", "1- Bedroom", "2- Bedroom","3- Bedroom"};
+
+                ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_item, type);
+
+                AutoCompleteTextView editTextFilledExposedDropdown = getActivity().findViewById(R.id.filled_exposed_dropdown);
+                editTextFilledExposedDropdown.setAdapter(adapter2);
             }
         });
     }
 
     @Override
-    public void getEventCanauxCallback(List<EventCanaux> eventCanaux){
+    public void getEventCanauxCallback(List<EventCanal> eventCanaux){
         _mainHandler.post(new Runnable() {
             @Override
             public void run() {
                 Spinner dropdown = getActivity().findViewById(R.id.spinnerEventFormCanal);
-                ArrayList<EventCanaux> dropdownList = new ArrayList<>();
-                for(EventCanaux eventCanal : eventCanaux){
+                ArrayList<EventCanal> dropdownList = new ArrayList<>();
+                for(EventCanal eventCanal : eventCanaux){
                     dropdownList.add(eventCanal);
                 }
-                ArrayAdapter<EventCanaux> adapter = new ArrayAdapter<EventCanaux>(getActivity(), android.R.layout.simple_spinner_dropdown_item, dropdownList);
+                ArrayAdapter<EventCanal> adapter = new ArrayAdapter<EventCanal>(getActivity(), android.R.layout.simple_spinner_dropdown_item, dropdownList);
                 dropdown.setAdapter(adapter);
             }
         });
@@ -185,7 +201,7 @@ public class EventUtilsFormFragment extends Fragment  implements IEventUtilsCall
         _mainHandler.post(new Runnable() {
             @Override
             public void run() {
-                HomeActivity.displayActivity((MainActivity) getActivity(), userID, "");
+                HomeActivity.displayActivity((MainActivity) getActivity(), user, "");
             }
         });
     }
@@ -193,14 +209,10 @@ public class EventUtilsFormFragment extends Fragment  implements IEventUtilsCall
 
     // User click on 'Select Date' button.
     private void buttonSelectDate() {
-
         // Date Select Listener.
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
-
             @Override
-            public void onDateSet(DatePicker view, int year,
-                                  int monthOfYear, int dayOfMonth) {
-
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 editTextDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
 
                 lastSelectedYear = year;
@@ -208,14 +220,8 @@ public class EventUtilsFormFragment extends Fragment  implements IEventUtilsCall
                 lastSelectedDayOfMonth = dayOfMonth;
             }
         };
-
         DatePickerDialog datePickerDialog = null;
-
-
-            datePickerDialog = new DatePickerDialog(getActivity(),
-                    dateSetListener, lastSelectedYear, lastSelectedMonth, lastSelectedDayOfMonth);
-
-
+        datePickerDialog = new DatePickerDialog(getActivity(), dateSetListener, lastSelectedYear, lastSelectedMonth, lastSelectedDayOfMonth);
         // Show
         datePickerDialog.show();
     }

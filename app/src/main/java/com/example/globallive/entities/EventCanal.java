@@ -1,6 +1,6 @@
 package com.example.globallive.entities;
 
-public class EventCanaux {
+public class EventCanal {
 
     public int id;
     public String canalEventName;

@@ -22,7 +22,7 @@ public class RegisterThread extends Thread{
         try {
             AuthenticatedUser authenticatedUser = _userService.RegisterUser(_user);
             if(authenticatedUser.getValidation().isSuccess()){
-                c.callBackSuccess(authenticatedUser.getUser().getId());
+                c.callBackSuccess(authenticatedUser.getUser());
             }{
                 c.callBackFail(authenticatedUser.getValidation().getMessage());
             }

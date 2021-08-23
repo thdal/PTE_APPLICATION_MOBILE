@@ -1,6 +1,6 @@
 package com.example.globallive.entities;
 
-public class EventTypes {
+public class EventType {
 
     public int id;
     public String typeEventName;

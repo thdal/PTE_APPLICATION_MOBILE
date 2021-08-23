@@ -1,9 +1,9 @@
 package com.example.globallive.tabs;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +15,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.globallive.R;
+import com.example.globallive.controllers.EventEditActivity;
 import com.example.globallive.controllers.EventViewActivity;
 import com.example.globallive.entities.EventAdapter;
+import com.example.globallive.entities.User;
 import com.example.globallive.services.EventServiceImplementation;
 import com.example.globallive.services.IEventService;
-import com.example.globallive.threads.HomeThread;
-import com.example.globallive.threads.IHomeActivityResult;
-
-import org.w3c.dom.Text;
+import com.example.globallive.threads.DeleteEventThread;
+import com.example.globallive.threads.EventListThread;
+import com.example.globallive.threads.IDeleteEventCallback;
+import com.example.globallive.threads.IEventListCallback;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,22 +33,26 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EventListFragment extends Fragment implements  View.OnClickListener, IHomeActivityResult, EventAdapter.OnEventListener {
+public class EventListFragment extends Fragment implements IEventListCallback, IDeleteEventCallback, EventAdapter.OnEventListener {
 
     //add
     private IEventService _eventService;
     private int _userId;
-    private HomeThread _thread;
+    private EventListThread _eventListThread;
+    private DeleteEventThread _deleteEventThread;
     private RecyclerView _recyclerView;
     private EventAdapter _eventAdapter;
     private Handler _mainHandler = new Handler();
+    private User currentUser;
+
     private ArrayList<com.example.globallive.entities.Event> _events = new ArrayList<>();
 
-    public EventListFragment() {
-        // Required empty public constructor
+    public EventListFragment(User user) {
+        // Required public constructor
+        this.currentUser = user;
         this._eventService = new EventServiceImplementation();
-        _thread = new HomeThread(this, this._userId, _eventService, 0, 0);
-        _thread.start();
+        _eventListThread = new EventListThread(this, this._userId, _eventService, 0, 0);
+        _eventListThread.start();
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,9 +61,6 @@ public class EventListFragment extends Fragment implements  View.OnClickListener
         View view = inflater.inflate(R.layout.fragment_event_list, container, false);
         this._recyclerView=view.findViewById(R.id.recyclerView);
         return view;
-    }
-    @Override
-    public void onClick(View v) {
     }
 
     private void DisplayMyEvents(List<com.example.globallive.entities.Event> events){
@@ -100,14 +103,38 @@ public class EventListFragment extends Fragment implements  View.OnClickListener
     }
 
     @Override
+    public void deleteEventCallbackSuccess() {
+        _mainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                updateEvents(0,0);
+            }
+        });
+    }
+
+    @Override
     public void onEventClick(int position) {
         Intent intent = new Intent(getActivity(), EventViewActivity.class);
-        intent.putExtra("selected_event", (Serializable) _events.get(position) );
+        intent.putExtra("SELECTED_EVENT", (Serializable) _events.get(position) );
+        startActivity(intent);
+    }
+
+    @Override
+    public void onEventEditClick(int position) {
+        Intent intent = new Intent(getActivity(), EventEditActivity.class);
+        intent.putExtra("SELECTED_EVENT", (Serializable) this._events.get(position) );
+        intent.putExtra("CURRENT_USER", (Serializable) this.currentUser );
         startActivity(intent);
     }
 
     public void updateEvents(int sortBy, int selectedItem){
-        _thread = new HomeThread(this, this._userId, _eventService, sortBy, selectedItem);
-        _thread.start();
+        _eventListThread = new EventListThread(this, this._userId, _eventService, sortBy, selectedItem);
+        _eventListThread.start();
+    }
+
+    public void onEventDeleteClick(int position){
+        int eventID = this._events.get(position).getId();
+        _deleteEventThread = new DeleteEventThread(this, eventID, _eventService);
+        _deleteEventThread.start();
     }
 }

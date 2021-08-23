@@ -23,4 +23,11 @@
         <item name="android:textStyle">bold</item>
 
     </style>
+    <style name="GLTextInputLayout">
+        <item name="colorControlActivated">@color/bluegloballive</item>
+        <item name="colorControlHighlight">@color/bluegloballive</item>
+    </style>
+
+    <!-- Style dropdown -->
+
 </resources>

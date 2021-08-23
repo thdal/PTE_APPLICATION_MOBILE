@@ -1,15 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="200dp"
     android:background="@color/bluegloballive"
-    android:orientation="vertical">
+    android:id="@+id/navHeaderRelativeLayout">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageViewEvent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="30dp"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:src="@drawable/man"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@color/white"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewNavHeaderName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="GlobalLive"
+        android:layout_marginLeft="20dp"
+        android:text="Nom Prenom"
         android:textColor="#FFFFFF"
-        android:textSize="30sp" />
-</LinearLayout>
+        android:textSize="30sp"
+        />
+    <TextView
+        android:id="@+id/textViewNavHeaderMail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:text="E-mail"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"/>
+
+    </LinearLayout>
+</RelativeLayout>

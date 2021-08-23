@@ -56,7 +56,7 @@ public class RegisterActivity extends MainActivity implements View.OnClickListen
                 user.setPassword(password.getText().toString());
                 user.setGenre_id(2);//Homme
                 user.setProfile_id(1);//Organisateur
-                user.setUserImg(0); // false pas d'image
+                user.setUserImg(false); // false pas d'image
                 user.setIsBanned(0); //false
 
                 _thread = new RegisterThread(this, user, _userService);
@@ -69,11 +69,11 @@ public class RegisterActivity extends MainActivity implements View.OnClickListen
     }
 
     @Override
-    public void callBackSuccess(int userId) {
+    public void callBackSuccess(User user) {
         _mainHandler.post(new Runnable() {
             @Override
             public void run() {
-                HomeActivity.displayActivity(RegisterActivity.this, userId, "");
+                HomeActivity.displayActivity(RegisterActivity.this, user, "");
             }
         });
 

@@ -24,7 +24,7 @@ public class AuthenticateThread extends Thread{
         try {
             AuthenticatedUser authenticatedUser = _userService.AuthenticateUser(_user);
             if(authenticatedUser.getValidation().isSuccess()){
-                c.callBackSuccess(authenticatedUser.getUser().getId());
+                c.callBackSuccess(authenticatedUser.getUser());
             }else{
                 c.callBackFail(authenticatedUser.getValidation().getMessage());
             }

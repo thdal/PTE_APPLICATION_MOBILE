@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.globallive.R;
-import com.example.globallive.entities.EventCanaux;
-import com.example.globallive.entities.EventTypes;
+import com.example.globallive.entities.EventCanal;
+import com.example.globallive.entities.EventType;
 import com.example.globallive.services.EventServiceImplementation;
 import com.example.globallive.services.IEventService;
 import com.example.globallive.threads.EventUtilsThread;
@@ -37,7 +37,7 @@ public class EventViewActivity extends MainActivity implements IEventUtilsCallba
         setContentView(R.layout.activity_event_view);
         showBack();
         //On récupére l'objet événement selectionné depuis la liste
-        com.example.globallive.entities.Event monEvent = (com.example.globallive.entities.Event) getIntent().getSerializableExtra("selected_event");
+        com.example.globallive.entities.Event monEvent = (com.example.globallive.entities.Event) getIntent().getSerializableExtra("SELECTED_EVENT");
         //On init notre service et on l'envoie au thread cela permettra d'afficher
         //dynamiquement les catégories et les canaux, le thread permet un appel non bloquant.
         this._eventService = new EventServiceImplementation();
@@ -87,11 +87,11 @@ public class EventViewActivity extends MainActivity implements IEventUtilsCallba
     }
 
     @Override
-    public void getEventTypesCallback(List<EventTypes> eventTypes){
+    public void getEventTypesCallback(List<EventType> eventTypes){
         _mainHandler.post(new Runnable() {
             @Override
             public void run() {
-                for(EventTypes eventType : eventTypes){
+                for(EventType eventType : eventTypes){
                     if(eventType.getId() == categorieId){
                         TextView eventCategorie = findViewById(R.id.textViewEventCategorie);
                         eventCategorie.setText(eventType.getTypeEventName());
@@ -102,11 +102,11 @@ public class EventViewActivity extends MainActivity implements IEventUtilsCallba
     }
 
     @Override
-    public void getEventCanauxCallback(List<EventCanaux> eventCanaux){
+    public void getEventCanauxCallback(List<EventCanal> eventCanaux){
         _mainHandler.post(new Runnable() {
             @Override
             public void run() {
-                for(EventCanaux eventCanal : eventCanaux){
+                for(EventCanal eventCanal : eventCanaux){
                     if(eventCanal.getId() == categorieId){
                         TextView eventCanalTxtView = findViewById(R.id.textViewEventCanal);
                         eventCanalTxtView.setText(eventCanal.getCanalEventName());
@@ -115,6 +115,8 @@ public class EventViewActivity extends MainActivity implements IEventUtilsCallba
             }
         });
     }
+
+
 
 
 }

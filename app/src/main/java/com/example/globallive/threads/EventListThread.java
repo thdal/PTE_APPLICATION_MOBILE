@@ -1,7 +1,5 @@
 package com.example.globallive.threads;
 
-import android.util.Log;
-
 import com.example.globallive.entities.Event;
 import com.example.globallive.services.IEventService;
 
@@ -12,14 +10,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeThread extends Thread{
-    IHomeActivityResult c;
+public class EventListThread extends Thread{
+    IEventListCallback c;
     int _userID;
     IEventService _eventService;
     int sortBy;
     int selectedItem;
 
-    public HomeThread(IHomeActivityResult c, int userID, IEventService eventService, int sortBy, int selectedItem) {
+    public EventListThread(IEventListCallback c, int userID, IEventService eventService, int sortBy, int selectedItem) {
         this.c = c;
         this._userID = userID;
         this._eventService = eventService;

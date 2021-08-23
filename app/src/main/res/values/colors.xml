@@ -11,6 +11,10 @@
     <color name="colorAccent">#D81B60</color>
     <color name="black">#FF000000</color>
     <color name="bluegloballive">#2E86DE</color>
+    <color name="dracula">#2d3436</color>
+    <color name="trash">#ff3d50</color>
+    <color name="edit">#ffc935</color>
+
 
 
 </resources>

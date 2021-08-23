@@ -5,12 +5,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.globallive.R;
 import com.example.globallive.tabs.EventListFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
@@ -68,6 +70,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         private final TextView eventDescription;
         private final TextView eventDate;
         private final ImageView eventImage;
+        private final FloatingActionButton editionButton;
+        private final FloatingActionButton trashButton;
 
         OnEventListener mOnEventListener;
 
@@ -81,6 +85,22 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             eventDescription = (TextView) view.findViewById(R.id.textViewEventDescription);
             eventDate = (TextView) view.findViewById(R.id.textViewEventDate);
             eventImage = (ImageView) view.findViewById(R.id.imageViewEvent);
+            editionButton = (FloatingActionButton) view.findViewById(R.id.layoutEventBtnEdit);
+            trashButton = (FloatingActionButton) view.findViewById(R.id.layoutEventBtnTrash);
+
+            editionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mOnEventListener.onEventEditClick(getAdapterPosition());
+                }
+            });
+            trashButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mOnEventListener.onEventDeleteClick(getAdapterPosition());
+                }
+            });
+
         }
         public TextView getEventName() {
             return eventName;
@@ -99,9 +119,13 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         public void onClick(View view) {
             mOnEventListener.onEventClick(getAdapterPosition());
         }
+
+
     }
 
     public interface OnEventListener{
         void onEventClick(int position);
+        void onEventEditClick(int position);
+        void onEventDeleteClick(int position);
     }
 }

@@ -1,6 +1,8 @@
 package com.example.globallive.entities;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     int id;
     String firstName;
@@ -9,7 +11,7 @@ public class User {
     String password;
     int profile_id;
     int genre_id;
-    int userImg;
+    boolean userImg;
     int isBanned;
 
     public int getId() {
@@ -76,15 +78,15 @@ public class User {
         this.genre_id = genre_id;
     }
 
-    public int isUserImg() {
+    public boolean isUserImg() {
         return userImg;
     }
 
-    public int getUserImg() {
+    public boolean getUserImg() {
         return userImg;
     }
 
-    public void setUserImg(int userImg) {
+    public void setUserImg(boolean userImg) {
         this.userImg = userImg;
     }
 }
