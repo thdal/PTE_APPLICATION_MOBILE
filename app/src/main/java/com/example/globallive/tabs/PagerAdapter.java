@@ -25,6 +25,8 @@ public class PagerAdapter extends FragmentPagerAdapter {
                 return new EventListFragment(user);
             case 1:
                 return new EventFormFragment(user);
+            case 2:
+                return new UserListFragment(user);
                 default: return null;
         }
     }

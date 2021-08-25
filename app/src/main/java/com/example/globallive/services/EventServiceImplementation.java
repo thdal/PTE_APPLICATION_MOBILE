@@ -58,7 +58,6 @@ public class EventServiceImplementation implements IEventService {
         }else{
 
         }
-
     }
 
 
@@ -123,12 +122,11 @@ public class EventServiceImplementation implements IEventService {
     }
 
     @Override
-    public OperationSuccess DeleteEvent(int eventId) throws IOException {
+    public void DeleteEvent(int eventId) throws IOException {
         Log.d("hey?", this._baseUrl + _deleteEvent + '/' + eventId);
         URL url = new URL(this._baseUrl + _deleteEvent + '/' + eventId);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("DELETE");
         int responseCode = connection.getResponseCode();
-        return null;
     }
 }

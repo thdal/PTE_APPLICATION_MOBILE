@@ -19,5 +19,5 @@ public interface IEventService {
     //Utils
     List<EventType> GetEventTypes() throws IOException, JSONException;
     List<EventCanal> GetEventCanaux() throws IOException, JSONException;
-    OperationSuccess DeleteEvent(int eventId) throws IOException;
+    void DeleteEvent(int eventId) throws IOException;
 }

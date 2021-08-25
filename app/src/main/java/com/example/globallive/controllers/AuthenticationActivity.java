@@ -34,7 +34,7 @@ public class AuthenticationActivity extends MainActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connexion);
-        setTitle("Authenticate");
+        setTitle("Connexion");
 
         _userService = new UserServiceImplementation();
         _authenticationSuccess = null;
@@ -48,8 +48,8 @@ public class AuthenticationActivity extends MainActivity implements View.OnClick
 
         TextView email = findViewById(R.id.identifiant);
         TextView password = findViewById(R.id.mot_de_passe);
-        email.setText("testorga@epsi.fr");
-        password.setText("tortue");
+        email.setText("admin@epsi.fr");
+        password.setText("adminadmin");
     }
     @Override
     public void onClick(View v) {
@@ -71,8 +71,10 @@ public class AuthenticationActivity extends MainActivity implements View.OnClick
                 startActivity(i);
                 break;
             case R.id.invite:
-                Intent a = new Intent(this, HomeActivity.class);
-                startActivity(a);
+                User visiteur = new User();
+                visiteur.setFirstName("Visiteur");
+                visiteur.setProfile_id(0);
+                HomeActivity.displayActivity(AuthenticationActivity.this, visiteur, "");
                 break;
         }
     }

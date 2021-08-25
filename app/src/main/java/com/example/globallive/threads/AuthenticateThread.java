@@ -32,13 +32,5 @@ public class AuthenticateThread extends Thread{
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
-        /*try {
-            _userService.TryGetApi();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
-
     }
 }

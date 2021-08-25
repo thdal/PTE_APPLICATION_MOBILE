@@ -68,7 +68,9 @@ public class EventViewActivity extends MainActivity implements IEventUtilsCallba
         //Sinon dans le dossier drawable l'image par défaut
         if(monEvent.isEventImg()){
             String imgUrl = getString(R.string.api_url) + "/eventId"+monEvent.getId()+"/eventImg.jpg";
-            Picasso.get().load(imgUrl).into(eventImg);
+            Picasso.with(this).load(imgUrl).into(eventImg);
+        }else{
+            Picasso.with(this).load(R.drawable.event).into(eventImg);
         }
         //Bouton de partage
         button = (Button) findViewById(R.id.button);

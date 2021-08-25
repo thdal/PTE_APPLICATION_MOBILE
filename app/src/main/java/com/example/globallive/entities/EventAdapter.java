@@ -3,6 +3,7 @@ package com.example.globallive.entities;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +16,8 @@ import com.example.globallive.tabs.EventListFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,11 +27,13 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     private ArrayList<Event> _events;
     private EventListFragment activity;
     private OnEventListener mOnEventListener;
+    private int userID;
 
-    public EventAdapter(EventListFragment activity, ArrayList<Event> events, OnEventListener onEventListener){
+    public EventAdapter(EventListFragment activity, ArrayList<Event> events, OnEventListener onEventListener, int userID){
         this.activity = activity;
         this._events = events;
         this.mOnEventListener = onEventListener;
+        this.userID = userID;
     }
 
     @NonNull
@@ -56,7 +61,17 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         //Sinon dans le dossier drawable l'image par défaut
         if(event.isEventImg()){
             imgUrl = holder.itemView.getContext().getString(R.string.api_url) + "/eventId"+event.getId()+"/eventImg.jpg";
-            Picasso.get().load(imgUrl).into(holder.getEventImage());
+            Picasso.with(holder.getEventImage().getContext()).cancelRequest(holder.getEventImage());
+            Picasso.with(holder.getEventImage().getContext()).load(imgUrl).into(holder.getEventImage());
+        }else{
+            Picasso.with(holder.getEventImage().getContext()).load(R.drawable.event).into(holder.getEventImage());
+        }
+        if(this.userID == event.getUserId()){
+            holder.getEditionButton().setVisibility(View.VISIBLE);
+            holder.getTrashButton().setVisibility(View.VISIBLE);
+        }else{
+            holder.getEditionButton().setVisibility(View.GONE);
+            holder.getTrashButton().setVisibility(View.GONE);
         }
     }
 
@@ -88,6 +103,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             editionButton = (FloatingActionButton) view.findViewById(R.id.layoutEventBtnEdit);
             trashButton = (FloatingActionButton) view.findViewById(R.id.layoutEventBtnTrash);
 
+
             editionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -114,6 +130,13 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         public ImageView getEventImage() {
             return eventImage;
         }
+        public FloatingActionButton getEditionButton() {
+            return editionButton;
+        }
+        public FloatingActionButton getTrashButton() {
+            return trashButton;
+        }
+
 
         @Override
         public void onClick(View view) {

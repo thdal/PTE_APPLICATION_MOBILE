@@ -47,7 +47,7 @@
         android:background="@drawable/border_visible"
         android:inputType="textPersonName"
         android:textAlignment="center"
-        android:hint="Firstname"  />
+        android:hint="Prénom"  />
 
     <EditText
         android:id="@+id/Lastname"
@@ -59,9 +59,20 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:textAlignment="center"
-        android:hint="Lastname" />
+        android:hint="Nom" />
 
-
+    <CheckBox
+        android:id="@+id/rgpdCheckBox"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:checked="false"
+        android:theme="@style/GLCheckBox"
+        android:text=""
+        android:focusableInTouchMode="true"
+        android:focusable="true"/>
 
     <TextView
         android:id="@+id/errorRegister"
@@ -72,6 +83,8 @@
         android:background="@android:color/white"
         android:text=""
         android:textColor="#ba160c" />
+
+
 
     <Button
         android:id="@+id/sinscrire"

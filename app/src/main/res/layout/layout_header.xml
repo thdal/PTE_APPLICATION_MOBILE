@@ -8,7 +8,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:backgroundTint="@android:color/transparent">
         <ImageView
             android:id="@+id/imageRetour"
@@ -17,28 +17,33 @@
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:layout_marginStart="5dp"
-            android:src="@drawable/retour"/>
+            android:src="@drawable/ic_back_arrow"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_centerInParent="true"
+            >
+
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/imageViewLogoGL"
             android:layout_width="100dp"
-            android:layout_height="700dp"
-            android:layout_marginStart="50dp"
-            android:layout_centerInParent="true"
-            android:gravity="center_vertical"
-            app:srcCompat="@drawable/logo_bleurouge" />
+            android:layout_height="100dp"
+            app:srcCompat="@drawable/logo_bleurouge"
+            />
 
         <TextView
             android:id="@+id/textViewTitle"
-            android:layout_marginTop="100dp"
-            android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="GlobalLive"
             android:textSize="24sp"
             android:textColor="@android:color/black"/>
 
+        </LinearLayout>
     </RelativeLayout>
 
 </RelativeLayout>

@@ -1,16 +1,22 @@
 package com.example.globallive.tabs;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.globallive.R;
+import com.example.globallive.controllers.AuthenticationActivity;
 import com.example.globallive.controllers.MainActivity;
+import com.example.globallive.controllers.SplashActivity;
 import com.example.globallive.entities.EventCanal;
 import com.example.globallive.entities.EventType;
 import com.example.globallive.entities.User;
@@ -25,6 +31,7 @@ import com.squareup.picasso.Picasso;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -49,14 +56,20 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
     NavigationView navigationView;
     ViewPager pager;
     TabLayout mTabLayout;
-    TabItem firstItem,secondItem;
+    TabItem firstItem,secondItem,thirdItem;
+    //TabItem firstItem,secondItem;
     PagerAdapter adapter;
     private int userID;
     private User currentUser;
     private IEventService _eventService;
+    //Servira dans le menu latéral gauche (recup label/icons catégories/canaux)
     private EventUtilsThread _thread;
     private List<EventType> _eventTypes;
     private List<EventCanal> _eventCanaux;
+    private Context context;
+    private String TITRE_HOME = "Liste d'événements";
+    private String TITRE_FORM = "Ajouter un événement";
+    private String TITRE_ADMIN = "Liste des utilisateurs";
 
     private Handler _mainHandler = new Handler();
 
@@ -72,6 +85,7 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        this.context = this;
         this.userID = getIntent().getIntExtra("CURRENT_USER_ID", 0);
         this.currentUser = (User) getIntent().getSerializableExtra("CURRENT_USER");
         //On récupére nos listes de canaux et de catégories
@@ -81,25 +95,28 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
         //Toute cette partie jusqu'à la fin de la fonction sert à manipuler nos fragments (Navbar)
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(TITRE_HOME);
         pager = findViewById(R.id.viewpager);
         mTabLayout = findViewById(R.id.tablayout);
         firstItem = findViewById(R.id.firstItem);
         secondItem = findViewById(R.id.secondItem);
+        //thirdItem = findViewById(R.id.thirdItem);
         drawerLayout = findViewById(R.id.drawer);
         navigationView = findViewById(R.id.nav_view);
-        //On met personnalise notre barre de navigation avec nom/prenom/mail
+        //On personnalise notre barre de navigation avec nom/prenom/mail
         //Reste Image ect.
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = (TextView) headerView.findViewById(R.id.textViewNavHeaderName);
         TextView navMail = (TextView) headerView.findViewById(R.id.textViewNavHeaderMail);
-        navUsername.setText(currentUser.getFirstName());
+        navUsername.setText(currentUser.getFirstName() + ' ' + currentUser.getLastName());
         navMail.setText(currentUser.getEmail());
         //Image Genre 1 = Femme , 2 = Homme
         //Si l'utilisateur a une image perso
         CircleImageView circleImageProfile = headerView.findViewById(R.id.imageViewEvent);
         if(currentUser.isUserImg()){
             String imgUrl = getString(R.string.api_url) + "/userId"+currentUser.getId()+"/userImg.jpg";
-            Picasso.get().load(imgUrl).into(circleImageProfile);
+            Picasso.with(this).load(imgUrl).into(circleImageProfile);
+
         }else{
             if(currentUser.getGenre_id() == 2){
                 circleImageProfile.setImageResource(R.drawable.man);
@@ -120,11 +137,23 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                if(tab.getPosition() == 0){
+                    getSupportActionBar().setTitle(TITRE_HOME);
+                    Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewpager + ":" + 0);
+                    if(page != null)
+                        ((EventListFragment)page).updateEvents(0, 0);
+                }
                 if(tab.getPosition() == 1){
+                    getSupportActionBar().setTitle(TITRE_FORM);
                     setTitle("Ajouter un événement");
                 }
+                if(tab.getPosition() == 2){
+                    getSupportActionBar().setTitle(TITRE_ADMIN);
+                    Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewpager + ":" + 2);
+                    if(page != null)
+                        ((UserListFragment)page).updateUsers();
+                }
                 pager.setCurrentItem(tab.getPosition());
-
             }
 
             @Override
@@ -138,6 +167,13 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
             }
         });
 
+        //Si on est visiteur -> pas de création d'event on vire un tab de navigation
+        if(currentUser.getProfile_id() == 0){
+            ((ViewGroup) mTabLayout.getChildAt(0)).getChildAt(1).setVisibility(View.GONE);
+        }
+        if(currentUser.getProfile_id() != 3){
+            ((ViewGroup) mTabLayout.getChildAt(0)).getChildAt(2).setVisibility(View.GONE);
+        }
         pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
     }
 
@@ -145,11 +181,14 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         drawerLayout.closeDrawer(GravityCompat.START);
+        getSupportActionBar().setSubtitle(item.getTitle());
+
         int sortBy = 0;
         if(item.getGroupId() == R.id.grpCategorie || item.getGroupId() == R.id.grpCanaux){
             if(item.getGroupId() == R.id.grpCategorie)
             {
                 sortBy = 1;
+
             }
             else{
                 sortBy = 2;
@@ -166,7 +205,7 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
             Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewpager + ":" + 0);
             //On call la méthode d'update de la vue
             ((EventListFragment)page).updateEvents(sortBy, item.getItemId());
-            pager.setCurrentItem(0);
+            pager.setCurrentItem(0);//0=liste des événements
 
         //Toast.makeText(this, "Btn is clicked.", Toast.LENGTH_SHORT).show();
         return false;
@@ -182,6 +221,7 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
                 homeIntent.addCategory( Intent.CATEGORY_HOME );//deconnexion
                 homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//deconnexion
                 startActivity(homeIntent);//deconnexion
+                AuthenticationActivity.displayActivity(this); //Retour connexion
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

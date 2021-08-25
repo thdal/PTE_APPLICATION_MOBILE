@@ -7,14 +7,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
-
 <LinearLayout
+    android:id="@+id/EventFormMainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".tabs.FormEventActivity">
 
     <include
+        android:id="@+id/headerInclude"
         layout="@layout/layout_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -26,7 +27,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:theme="@style/GLTextInputLayout"
-        app:endIconMode="clear_text">
+        app:endIconMode="clear_text"
+        app:startIconDrawable="@drawable/ic_baseline_title_24">
 
         <EditText
             android:id="@+id/EventFormEventTitle"
@@ -45,7 +47,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:theme="@style/GLTextInputLayout"
-        app:endIconMode="clear_text">
+        app:endIconMode="clear_text"
+        app:startIconDrawable="@drawable/ic_baseline_add_link_24">
 
         <EditText
             android:id="@+id/EventFormEventLink"
@@ -64,7 +67,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:theme="@style/GLTextInputLayout"
-        app:endIconMode="clear_text">
+        app:endIconMode="clear_text"
+        app:startIconDrawable="@drawable/ic_baseline_location_on_24">
 
         <EditText
             android:id="@+id/EventFormEventAddress"
@@ -86,8 +90,8 @@
         android:focusable="false"
         android:theme="@style/GLTextInputLayout"
         app:endIconMode="custom"
-        app:endIconDrawable="@drawable/ic_baseline_calendar_today_24"
-        app:endIconContentDescription="Choisir une date">
+        app:startIconDrawable="@drawable/ic_baseline_calendar_today_24"
+        app:startIconContentDescription="Choisir une date">
 
         <EditText
             android:id="@+id/editText_date"
@@ -98,82 +102,113 @@
             android:layout_marginLeft="10dp"
             android:focusable="false"
             android:clickable="true"
-            app:endIconDrawable="@drawable/ic_baseline_calendar_today_24"
             />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/menu"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Type"
-        android:orientation="horizontal"
-        >
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/spinner_bg">
+        <Spinner
+            android:id="@+id/spinnerEventFormCat"
+            style="@style/Widget.AppCompat.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/dropdownListPreferredItemHeight"
+            android:layout_margin="10dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:dropDownWidth="match_parent"
+            android:drawable="@drawable/abc_spinner_mtrl_am_alpha"
+            android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
+            android:paddingRight="14dp"
+            android:popupBackground="@android:color/white"
+            android:popupElevation="3dp"
+            android:stateListAnimator="@drawable/spinner_sla"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
 
+        android:background="@drawable/spinner_bg">
+        <Spinner
+            android:id="@+id/spinnerEventFormCanal"
+            style="@style/Widget.AppCompat.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/dropdownListPreferredItemHeight"
+            android:layout_margin="10dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:dropDownWidth="match_parent"
+            android:drawable="@drawable/abc_spinner_mtrl_am_alpha"
+            android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
+            android:paddingRight="14dp"
+            android:popupBackground="@android:color/white"
+            android:popupElevation="3dp"
+            android:stateListAnimator="@drawable/spinner_sla"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </RelativeLayout>
 
-        <AutoCompleteTextView
-            android:id="@+id/filled_exposed_dropdown"
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_marginTop="10dp"
+        android:hint="Description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:theme="@style/GLTextInputLayout"
+        app:endIconMode="clear_text"
+        app:startIconDrawable="@drawable/ic_baseline_short_text_24">
+
+        <EditText
+            android:id="@+id/EventFormEventDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="none"/>
-
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            />
     </com.google.android.material.textfield.TextInputLayout>
-
-
-    <Spinner
-        android:id="@+id/spinnerEventFormCat"
-        android:layout_width="300dp"
-        android:layout_marginTop="10dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown"/>
-
-    <Spinner
-        android:id="@+id/spinnerEventFormCanal"
-        android:layout_width="300dp"
-        android:layout_marginTop="10dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown"/>
-
-
-
-
-    <EditText
-        android:id="@+id/EventFormEventDescription"
-        android:layout_marginTop="10dp"
-        android:layout_width="300dp"
-        android:layout_gravity="center"
-        android:ems="10"
-        android:background="@drawable/border_visible"
-        android:layout_height="wrap_content"
-        android:hint="Description"
-        android:ellipsize="start"
-        android:gravity="center_horizontal"/>
 
     <TextView
         android:id="@+id/errorEventForm"
         android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
         android:background="@android:color/white"
         android:text=""
         android:textColor="#ba160c" />
 
     <Button
         android:id="@+id/submitEvent"
-        android:layout_width="270dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
         android:layout_gravity="center"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
         android:backgroundTint="@color/bluegloballive"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:text="Ajouter"
-        android:layout_marginBottom="150dp"/>
+        android:drawableTint="@color/white"
+        android:layout_marginBottom="100dp"/>
+
+
 
 </LinearLayout>
     </ScrollView>
+

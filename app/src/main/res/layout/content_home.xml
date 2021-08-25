@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/bluegloballive"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -22,10 +24,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        android:background="@color/bluegloballive"
-        app:tabSelectedTextColor="@color/black"
-        app:tabIndicatorColor="@color/black"
-        app:tabIconTint="@color/black">
+        android:background="@color/white"
+        app:tabSelectedTextColor="@color/bluegloballive"
+        app:tabIndicatorColor="@color/bluegloballive"
+        app:tabInlineLabel="true"
+        app:tabIconTint="@color/selected_tab">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/firstItem"
@@ -41,7 +44,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:color="@color/black"
-            android:icon="@drawable/ic_baseline_add_circle_outline_24" />
+            android:icon="@drawable/ic_baseline_add_24" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/thirdItem"
+            android:text="Administration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:color="@color/black"
+            android:icon="@drawable/ic_baseline_supervised_user_circle_24" />
 
 
     </com.google.android.material.tabs.TabLayout>

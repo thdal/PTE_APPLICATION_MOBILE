@@ -1,6 +1,8 @@
 package com.example.globallive.tabs;
 
 import android.app.DatePickerDialog;
+import android.graphics.Typeface;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -11,6 +13,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -75,9 +80,18 @@ public class EventFormFragment extends Fragment  implements IEventUtilsCallback,
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_event_form, container, false);
         //Le click de notre bouton submit dans le fragment
-        Button button = (Button) view.findViewById(R.id.submitEvent);
+        Button buttonSubmit = (Button) view.findViewById(R.id.submitEvent);
+        buttonSubmit.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_add_24, 0, 0, 0);
+        //On vire le logo du header pour gagner en harmonie
+        RelativeLayout outer = (RelativeLayout)view.findViewById(R.id.headerInclude);
+        ImageView iv = (ImageView)outer.findViewById(R.id.imageViewLogoGL);
+        TextView txtLabel = (TextView)outer.findViewById(R.id.textViewTitle);
+        txtLabel.setTypeface(null, Typeface.BOLD);
+        iv.setVisibility(View.GONE);
+        //On vire tout
+        outer.setVisibility(View.GONE);
 
-        button.setOnClickListener(new View.OnClickListener()
+        buttonSubmit.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -167,15 +181,6 @@ public class EventFormFragment extends Fragment  implements IEventUtilsCallback,
                 ArrayAdapter<EventType> adapter = new ArrayAdapter<EventType>(getActivity(), android.R.layout.simple_spinner_dropdown_item, dropdownList);
                 //set the spinners adapter to the previously created one.
                 dropdown.setAdapter(adapter);
-
-
-
-                String[] type = new String[] {"Bed-sitter", "Single", "1- Bedroom", "2- Bedroom","3- Bedroom"};
-
-                ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_item, type);
-
-                AutoCompleteTextView editTextFilledExposedDropdown = getActivity().findViewById(R.id.filled_exposed_dropdown);
-                editTextFilledExposedDropdown.setAdapter(adapter2);
             }
         });
     }

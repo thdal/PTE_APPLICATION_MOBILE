@@ -12,7 +12,8 @@ public class User implements Serializable {
     int profile_id;
     int genre_id;
     boolean userImg;
-    int isBanned;
+    boolean isBanned;
+    int user_id;
 
     public int getId() {
         return id;
@@ -22,11 +23,19 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public int getIsBanned() {
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
+
+    public boolean getIsBanned() {
         return isBanned;
     }
 
-    public void setIsBanned(int isBanned) {
+    public void setIsBanned(boolean isBanned) {
         this.isBanned = isBanned;
     }
 

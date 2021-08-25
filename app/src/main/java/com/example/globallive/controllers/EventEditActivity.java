@@ -1,16 +1,29 @@
 package com.example.globallive.controllers;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.globallive.R;
 import com.example.globallive.entities.Event;
@@ -25,6 +38,8 @@ import com.example.globallive.threads.IEventUtilsCallback;
 import com.example.globallive.threads.IPostEventCallback;
 import com.example.globallive.threads.PostEventThread;
 import com.example.globallive.threads.RegisterThread;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -60,16 +75,34 @@ public class EventEditActivity extends MainActivity implements IEventUtilsCallba
     //Callback
     private IPostEventCallback c;
 
+    public static void displayActivity(MainActivity activity, User user, Event event){
+        Intent intent = new Intent(activity, EventEditActivity.class);
+        intent.putExtra("SELECTED_EVENT", event );
+        intent.putExtra("CURRENT_USER",  user );
+        activity.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_event_form);
         showBack();
-        setTitle("Édition d'événement");
+        setTitle("Modifier un événement");
+        //Toolbar toolbar = findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
+        //getSupportActionBar().setTitle("Modifier un événement");
         c = this;
         this.currentUser = (User) getIntent().getSerializableExtra("CURRENT_USER");
         //L'événement
         selectedEvent = (Event) getIntent().getSerializableExtra("SELECTED_EVENT");
+        //On vire le logo du header pour gagner en harmonie
+        RelativeLayout outer = (RelativeLayout)findViewById(R.id.headerInclude);
+        ImageView iv = (ImageView)outer.findViewById(R.id.imageViewLogoGL);
+        TextView txtLabel = (TextView)outer.findViewById(R.id.textViewTitle);
+        txtLabel.setTypeface(null, Typeface.BOLD);
+        iv.setVisibility(View.GONE);
+        //On vire tout
+        //outer.setVisibility(View.GONE);
         //On init notre service et on l'envoie au thread cela permettra d'afficher
         //dynamiquement les catégories et les canaux, le thread permet un appel non bloquant.
         this._eventService = new EventServiceImplementation();
@@ -82,6 +115,8 @@ public class EventEditActivity extends MainActivity implements IEventUtilsCallba
         eventAddress = this.findViewById(R.id.EventFormEventAddress);
         eventDescription = this.findViewById(R.id.EventFormEventDescription);
         btnSubmit = this.findViewById(R.id.submitEvent);
+        //addIcon btnSubmit
+        btnSubmit.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_edit_24, 0, 0, 0);
         mySpinnerCat = (Spinner) this.findViewById(R.id.spinnerEventFormCat);
         mySpinnerCan = (Spinner) this.findViewById(R.id.spinnerEventFormCanal);
         btnSubmit.setText("Modifier");
@@ -143,6 +178,7 @@ public class EventEditActivity extends MainActivity implements IEventUtilsCallba
                 }
             }
         });
+
     }
 
     @Override
@@ -212,5 +248,33 @@ public class EventEditActivity extends MainActivity implements IEventUtilsCallba
                 HomeActivity.displayActivity((MainActivity) context, currentUser, "");
             }
         });
+    }
+
+    //Menu de droite tripledot (met à jour la vue)
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.right_menu, menu);
+        return true;
+    }
+
+    //Item selectionné du menu triple dot
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.rightMenuItemSignOut:
+                Intent homeIntent = new Intent(Intent.ACTION_MAIN); //deconnexion
+                homeIntent.addCategory( Intent.CATEGORY_HOME );//deconnexion
+                homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//deconnexion
+                startActivity(homeIntent);//deconnexion
+                AuthenticationActivity.displayActivity(this); //Retour connexion
+                return true;
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

@@ -42,14 +42,17 @@ public class ConnectionUtils {
             conn.setDoOutput(true);
             conn.getOutputStream().write(postDataBytes);
             Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder(); //On récupére le message de réponse du stream
             for (int c; (c = in.read()) >= 0; ) {
                 sb.append((char) c);
             }
-            return sb.toString();
+            String responseMsg = sb.toString();
+            int responseCode = conn.getResponseCode();
+            return responseMsg;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        //Si nous avons une erreur nous retournons null
         return null;
     }
 
