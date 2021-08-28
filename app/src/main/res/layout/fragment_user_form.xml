@@ -23,6 +23,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/imageViewUser"
+            android:layout_marginTop="10dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:src="@drawable/man"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="2dp" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_marginTop="10dp"
             android:hint="Prénom"
@@ -67,6 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            app:startIconDrawable="@drawable/ic_baseline_alternate_email_24"
             android:theme="@style/GLTextInputLayout"
             app:endIconMode="clear_text">
 
@@ -80,22 +92,118 @@
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
-
-
-        <Button
-            android:id="@+id/submitUser"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_gravity="center"
+            android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
-            android:backgroundTint="@color/bluegloballive"
-            android:textColor="@color/white"
-            android:text="Ajouter"
-            android:drawableTint="@color/white"
-            android:layout_marginBottom="100dp"/>
+            android:layout_marginTop="10dp"
+            android:background="@drawable/spinner_bg">
+        <Spinner
+            android:id="@+id/spinnerUserProfils"
+            app:startIconDrawable="@drawable/ic_baseline_alternate_email_24"
+            style="@style/Widget.AppCompat.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/dropdownListPreferredItemHeight"
+            android:layout_margin="10dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:dropDownWidth="match_parent"
+            android:drawable="@drawable/abc_spinner_mtrl_am_alpha"
+            android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
+            android:paddingRight="14dp"
+            android:popupBackground="@android:color/white"
+            android:popupElevation="3dp"
+            android:stateListAnimator="@drawable/spinner_sla"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/spinner_bg">
+            <Spinner
+                android:id="@+id/spinnerUserGender"
+                style="@style/Widget.AppCompat.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/dropdownListPreferredItemHeight"
+                android:layout_margin="10dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:dropDownWidth="match_parent"
+                android:drawable="@drawable/abc_spinner_mtrl_am_alpha"
+                android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
+                android:paddingRight="14dp"
+                android:popupBackground="@android:color/white"
+                android:popupElevation="3dp"
+                android:stateListAnimator="@drawable/spinner_sla"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </RelativeLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <Button
+                android:id="@+id/submitUser"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/bluegloballive"
+                android:textColor="@color/white"
+                android:text="Ajouter"
+                android:drawableTint="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_alignParentBottom="true"
+                />
 
 
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <Button
+                android:id="@+id/deleteUser"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/trash"
+                android:text="Supprimer"
+                android:drawableTint="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="20dp"/>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </ScrollView>
+

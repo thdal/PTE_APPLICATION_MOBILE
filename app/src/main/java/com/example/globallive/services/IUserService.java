@@ -4,6 +4,7 @@ import com.example.globallive.entities.AuthenticatedUser;
 import com.example.globallive.entities.Event;
 import com.example.globallive.entities.OperationSuccess;
 import com.example.globallive.entities.User;
+import com.example.globallive.entities.UserProfil;
 
 import org.json.JSONException;
 
@@ -14,6 +15,7 @@ public interface IUserService {
     AuthenticatedUser RegisterUser(User user) throws IOException;
     AuthenticatedUser AuthenticateUser(User user) throws IOException;
     List<User> GetUsers() throws IOException, JSONException;
+    List<UserProfil> GetUserProfils() throws IOException, JSONException;
     void DeleteUser(int eventId, int profileId) throws IOException;
     void PutUser(User user) throws IOException, JSONException;
 

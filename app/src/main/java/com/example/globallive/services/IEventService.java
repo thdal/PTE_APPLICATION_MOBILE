@@ -16,6 +16,7 @@ public interface IEventService {
     List<Event> GetEventsOfTheDay() throws IOException, JSONException;
     List<Event> GetEventsWithType(int typeID) throws IOException, JSONException;
     List<Event> GetEventsWithCanal(int canalID) throws IOException, JSONException;
+    List<Event> GetWithWord(String word) throws IOException, JSONException;
     //Utils
     List<EventType> GetEventTypes() throws IOException, JSONException;
     List<EventCanal> GetEventCanaux() throws IOException, JSONException;

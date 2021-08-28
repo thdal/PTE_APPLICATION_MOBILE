@@ -10,6 +10,7 @@ public class Event implements Serializable {
     private String eventName;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date eventDate;
+    private String eventHour;
     private String eventLink;
     private String eventAddress;
     private String eventDescription;
@@ -28,6 +29,14 @@ public class Event implements Serializable {
 
     public int getId() {
         return id;
+    }
+
+    public String getEventHour() {
+        return eventHour;
+    }
+
+    public void setEventHour(String eventHour) {
+        this.eventHour = eventHour;
     }
 
     public void setId(int id) {

@@ -18,14 +18,17 @@
         android:layout_width="200dp"
         android:layout_height="30dp"
         android:layout_gravity="center"
+        android:textCursorDrawable="@color/bluegloballive"
         android:background="@drawable/border_visible"
         android:ems="10"
         android:inputType="textPersonName"
         android:textAlignment="center"
+        android:theme="@style/ColoredHandleTheme"
         android:hint="E-mail" />
 
     <EditText
         android:id="@+id/mot_de_passe"
+        android:textCursorDrawable="@color/bluegloballive"
         android:layout_marginTop="10dp"
         android:layout_width="200dp"
         android:layout_height="30dp"
@@ -34,6 +37,7 @@
         android:ems="10"
         android:inputType="textPassword"
         android:textAlignment="center"
+        android:theme="@style/ColoredHandleTheme"
         android:textColor="#676262"
         android:hint="Password" />
 

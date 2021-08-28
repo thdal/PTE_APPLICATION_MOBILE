@@ -84,30 +84,28 @@
                                 android:clipChildren="false"
                                 android:clipToPadding="false"
                                 android:paddingBottom="2sp">
-                                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                <ImageButton
                                     android:id="@+id/layoutEventBtnEdit"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
                                     android:layout_gravity="end|bottom"
-                                    app:rippleColor="@color/white"
-                                    app:backgroundTint="@color/edit"
-                                    android:layout_marginRight="5dp"
+                                    android:layout_marginRight="8dp"
+                                    android:background="@drawable/border_button_2"
+                                    android:foreground="?attr/selectableItemBackgroundBorderless"
                                     android:src="@drawable/ic_baseline_edit_24"
                                     android:visibility="gone"
-                                    android:contentDescription="Edition"/>
+                                    app:tint="@color/edit" />
 
-                                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                <ImageButton
                                     android:id="@+id/layoutEventBtnTrash"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
                                     android:layout_gravity="end|bottom"
-                                    app:rippleColor="@color/white"
-                                    app:backgroundTint="@color/trash"
-                                    android:outlineAmbientShadowColor="@color/black"
+                                    android:background="@drawable/border_button_2"
+                                    android:foreground="?attr/selectableItemBackgroundBorderless"
                                     android:src="@drawable/ic_baseline_delete_24"
-                                    android:visibility="gone"
-                                    android:contentDescription="Trash"
-                                    />
+                                    app:tint="@color/trash"
+                                    android:visibility="gone"/>
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>

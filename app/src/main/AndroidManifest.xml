@@ -12,11 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.GlobalLive">
+        android:theme="@style/Theme.GlobalLive"
+        android:name=".services.App">
 
         <activity android:name=".tabs.HomeActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".controllers.MainActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity android:name=".controllers.UserEditActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".controllers.UserFormActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".controllers.EventEditActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".controllers.EventViewActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".controllers.AuthenticationActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

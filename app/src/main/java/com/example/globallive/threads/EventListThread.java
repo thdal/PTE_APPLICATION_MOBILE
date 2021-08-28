@@ -16,13 +16,15 @@ public class EventListThread extends Thread{
     IEventService _eventService;
     int sortBy;
     int selectedItem;
+    String word;
 
-    public EventListThread(IEventListCallback c, int userID, IEventService eventService, int sortBy, int selectedItem) {
+    public EventListThread(IEventListCallback c, int userID, IEventService eventService, int sortBy, int selectedItem, String word) {
         this.c = c;
         this._userID = userID;
         this._eventService = eventService;
         this.sortBy = sortBy;
         this.selectedItem = selectedItem;
+        this.word = word;
     }
 
     @Override
@@ -49,6 +51,12 @@ public class EventListThread extends Thread{
             }
             if(sortBy == 0){
                  myEvents = _eventService.GetEvents();
+            }
+            if(sortBy == 50 ){
+                if(word.isEmpty())
+                    myEvents = _eventService.GetEvents();
+                else
+                    myEvents = _eventService.GetWithWord(word);
             }
 
             this.c.callbackSuccess(myEvents);

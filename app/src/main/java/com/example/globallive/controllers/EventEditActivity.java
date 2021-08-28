@@ -1,5 +1,6 @@
 package com.example.globallive.controllers;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -17,13 +18,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
-
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.viewpager.widget.ViewPager;
 
 import com.example.globallive.R;
 import com.example.globallive.entities.Event;
@@ -37,14 +33,12 @@ import com.example.globallive.threads.EventUtilsThread;
 import com.example.globallive.threads.IEventUtilsCallback;
 import com.example.globallive.threads.IPostEventCallback;
 import com.example.globallive.threads.PostEventThread;
-import com.example.globallive.threads.RegisterThread;
-import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.tabs.TabLayout;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -63,10 +57,17 @@ public class EventEditActivity extends MainActivity implements IEventUtilsCallba
     private int lastSelectedYear;
     private int lastSelectedMonth;
     private int lastSelectedDayOfMonth;
+    //HourPicker
+    private EditText editTextHour;
+    private int lastSelectedHour = -1;
+    private int lastSelectedMinute = -1;
     //Nos inputs
+    TextView _errorDisplay;
     private TextView eventTitle ;
     private TextView eventLink;
     private TextView eventDate;
+    private TextView eventHour;
+    private String eventHourstr;
     private TextView eventAddress;
     private TextView eventDescription;
     private Button btnSubmit;
@@ -74,6 +75,9 @@ public class EventEditActivity extends MainActivity implements IEventUtilsCallba
     private Spinner mySpinnerCan;
     //Callback
     private IPostEventCallback c;
+    //
+    Boolean errorForm = true;
+
 
     public static void displayActivity(MainActivity activity, User user, Event event){
         Intent intent = new Intent(activity, EventEditActivity.class);
@@ -108,10 +112,11 @@ public class EventEditActivity extends MainActivity implements IEventUtilsCallba
         this._eventService = new EventServiceImplementation();
         _thread = new EventUtilsThread(this, _eventService);
         _thread.start();
-        TextView _errorDisplay = this.findViewById(R.id.errorEventForm);
+        _errorDisplay = this.findViewById(R.id.errorEventForm);
         eventTitle = this.findViewById(R.id.EventFormEventTitle);
         eventLink = this.findViewById(R.id.EventFormEventLink);
         eventDate = this.findViewById(R.id.editText_date);
+        eventHour = this.findViewById(R.id.editText_hour);
         eventAddress = this.findViewById(R.id.EventFormEventAddress);
         eventDescription = this.findViewById(R.id.EventFormEventDescription);
         btnSubmit = this.findViewById(R.id.submitEvent);
@@ -124,6 +129,12 @@ public class EventEditActivity extends MainActivity implements IEventUtilsCallba
         eventLink.setText(selectedEvent.getEventLink());
         eventAddress.setText(selectedEvent.getEventAddress());
         eventDescription.setText(selectedEvent.getEventDescription());
+        if(selectedEvent.getEventHour() == null){
+            this.eventHourstr = "--:--";
+        }else{
+            this.eventHourstr = selectedEvent.getEventHour().toString();
+        }
+        eventHour.setText(eventHourstr);
         //Date to string
         Date date = selectedEvent.getEventDate();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -141,6 +152,15 @@ public class EventEditActivity extends MainActivity implements IEventUtilsCallba
                 buttonSelectDate();
             }
         });
+        //SelectHour
+        this.editTextHour = (EditText) this.findViewById(R.id.editText_hour);
+        editTextHour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // DO STUFF
+                buttonSelectHour();
+            }
+        });
         //Le submit
         Button button = (Button) this.findViewById(R.id.submitEvent);
         button.setOnClickListener(new View.OnClickListener()
@@ -150,30 +170,38 @@ public class EventEditActivity extends MainActivity implements IEventUtilsCallba
             {
                 switch (v.getId()) {
                     case R.id.submitEvent:
-                        try {
-                            EventType typeSelected = (EventType) mySpinnerCat.getSelectedItem();
-                            EventCanal canalSelected = (EventCanal) mySpinnerCan.getSelectedItem();
-                            Event eventToSend = new Event();
-                            eventToSend.setTypeEventId(typeSelected.getId());
-                            eventToSend.setCanalEventId(canalSelected.getId());
-                            eventToSend.setEventName(eventTitle.getText().toString());
-                            eventToSend.setEventImg(false); // pas d'upload d'image pr linstant sur lapp mobile
-                            eventToSend.setEventAddress(eventAddress.getText().toString());
-                            eventToSend.setEventDescription(eventDescription.getText().toString());
-                            eventToSend.setEventLink(eventLink.getText().toString());
-                            //On parse la string au format date
-                            Date date = null;
-                            date = new SimpleDateFormat("dd/MM/yyyy").parse(eventDate.getText().toString());
-                            //le modele se charge d'un deuxieme parse au format de la bdd yyyy-MM-dd voir annotation dans le fichier
-                            eventToSend.setEventDate(date);
-                            eventToSend.setId(selectedEvent.getId());
-                            eventToSend.setUserId(selectedEvent.getUserId());
-                            Toast.makeText(context,  String.valueOf(selectedEvent.getId()), Toast.LENGTH_SHORT).show();
-                            _postEventThread = new PostEventThread(c, eventToSend, _eventService, true);
-                            _postEventThread.start();
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+                        getEventFormError();
+                        if(errorForm)
+                            _errorDisplay.setText("Veuillez remplir tous les champs svp");
+                        //Sinon on post
+                        else
+                            try {
+                                EventType typeSelected = (EventType) mySpinnerCat.getSelectedItem();
+                                EventCanal canalSelected = (EventCanal) mySpinnerCan.getSelectedItem();
+                                Event eventToSend = new Event();
+                                eventToSend.setTypeEventId(typeSelected.getId());
+                                eventToSend.setCanalEventId(canalSelected.getId());
+                                eventToSend.setEventName(eventTitle.getText().toString());
+                                eventToSend.setEventImg(false); // pas d'upload d'image pr linstant sur lapp mobile
+                                eventToSend.setEventAddress(eventAddress.getText().toString());
+                                eventToSend.setEventDescription(eventDescription.getText().toString());
+                                eventToSend.setEventLink(eventLink.getText().toString());
+                                //String to hour
+                                String time = eventHour.getText().toString();
+                                eventToSend.setEventHour(time);
+                                //On parse la string au format date
+                                Date date = null;
+                                date = new SimpleDateFormat("dd/MM/yyyy").parse(eventDate.getText().toString());
+                                //le modele se charge d'un deuxieme parse au format de la bdd yyyy-MM-dd voir annotation dans le fichier
+                                eventToSend.setEventDate(date);
+                                eventToSend.setId(selectedEvent.getId());
+                                eventToSend.setUserId(selectedEvent.getUserId());
+                                Toast.makeText(context,  String.valueOf(selectedEvent.getId()), Toast.LENGTH_SHORT).show();
+                                _postEventThread = new PostEventThread(c, eventToSend, _eventService, true);
+                                _postEventThread.start();
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
                         break;
                 }
             }
@@ -239,6 +267,30 @@ public class EventEditActivity extends MainActivity implements IEventUtilsCallba
         datePickerDialog.show();
     }
 
+    // User click on 'Select Hour' button.
+    private void buttonSelectHour() {
+        if(this.lastSelectedHour == -1)  {
+            // Get Current Time
+            final Calendar c = Calendar.getInstance();
+            this.lastSelectedHour = c.get(Calendar.HOUR_OF_DAY);
+            this.lastSelectedMinute = c.get(Calendar.MINUTE);
+        }
+        // Time Set Listener.
+        TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
+
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                editTextHour.setText(hourOfDay + ":" + minute );
+                lastSelectedHour = hourOfDay;
+                lastSelectedMinute = minute;
+            }
+        };
+        TimePickerDialog timePickerDialog = null;
+        timePickerDialog = new TimePickerDialog(this, timeSetListener, lastSelectedHour, lastSelectedMinute, true);
+        // Show
+        timePickerDialog.show();
+    }
+
     //Callback de notre édition
     @Override
     public void postEventCallbackSuccess(){
@@ -276,5 +328,42 @@ public class EventEditActivity extends MainActivity implements IEventUtilsCallba
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void getEventFormError(){
+        if (eventTitle.getText().toString().length() <= 0) {
+            eventTitle.setError("Veuillez renseigner un titre svp.");
+            errorForm = true;
+        }else{
+            eventTitle.setError(null);
+        }
+        if (eventLink.getText().toString().length() <= 0) {
+            eventLink.setError("Veuillez renseigner un lien svp.");
+            errorForm = true;
+        }else{
+            eventLink.setError(null);
+        }
+        if (eventAddress.getText().toString().length() <= 0) {
+            eventAddress.setError("Veuillez renseigner une adresse svp.");
+            errorForm = true;
+        }else{
+            eventAddress.setError(null);
+        }
+        if (eventDate.getText().toString().length() <= 0) {
+            eventDate.setError("Veuillez renseigner une date svp.");
+            errorForm = true;
+        }else{
+            eventDate.setError(null);
+        }
+        if (eventDescription.getText().toString().length() <= 0) {
+            eventDescription.setError("Veuillez renseigner une description svp.");
+            errorForm = true;
+        }else{
+            eventDescription.setError(null);
+        }
+
+        if(eventTitle.getError() == null && eventLink.getError() == null
+                && eventAddress.getError() == null && eventDate.getError() == null && eventDescription.getError() == null)
+            errorForm = false;
     }
 }

@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -29,6 +31,7 @@ import com.example.globallive.threads.DeleteEventThread;
 import com.example.globallive.threads.EventListThread;
 import com.example.globallive.threads.IDeleteEventCallback;
 import com.example.globallive.threads.IEventListCallback;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -53,7 +56,7 @@ public class EventListFragment extends Fragment implements IEventListCallback, I
         // Required public constructor
         this.currentUser = user;
         this._eventService = new EventServiceImplementation();
-        _eventListThread = new EventListThread(this, this._userId, _eventService, 0, 0);
+        _eventListThread = new EventListThread(this, this._userId, _eventService, 0, 0, "");
         _eventListThread.start();
     }
     @Override
@@ -62,8 +65,6 @@ public class EventListFragment extends Fragment implements IEventListCallback, I
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_event_list, container, false);
         this._recyclerView=view.findViewById(R.id.recyclerViewEvent);
-
-
         return view;
     }
 
@@ -135,7 +136,12 @@ public class EventListFragment extends Fragment implements IEventListCallback, I
     }
 
     public void updateEvents(int sortBy, int selectedItem){
-        _eventListThread = new EventListThread(this, this._userId, _eventService, sortBy, selectedItem);
+        _eventListThread = new EventListThread(this, this._userId, _eventService, sortBy, selectedItem, "");
+        _eventListThread.start();
+    }
+
+    public void searchEvents(String searchWord){
+        _eventListThread = new EventListThread(this, this._userId, _eventService, 50, 0, searchWord);
         _eventListThread.start();
     }
 

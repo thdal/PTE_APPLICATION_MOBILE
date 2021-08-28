@@ -3,7 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".tabs.UserListFragment">
+
+
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -17,9 +20,25 @@
             android:layout_width="match_parent"
             class="android.support.v7.widget.RecyclerView"
             android:layout_height="wrap_content"
-            android:paddingBottom="100dp"/>
+            android:paddingBottom="75dp"/>
+
 
 
     </ScrollView>
 
-</FrameLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/listUserAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:rippleColor="@color/white"
+        android:tint="@color/white"
+        app:backgroundTint="@color/bluegloballive"
+        android:outlineAmbientShadowColor="@color/black"
+        android:src="@drawable/ic_baseline_add_24"
+        android:contentDescription="Add"
+        android:layout_marginLeft="10dp"
+        app:tint="@android:color/white"
+        android:layout_marginBottom="75dp"
+        android:layout_gravity="end|bottom" />
+</FrameLayout >

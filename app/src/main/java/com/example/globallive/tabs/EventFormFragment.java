@@ -1,6 +1,7 @@
 package com.example.globallive.tabs;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.graphics.Typeface;
 import android.media.Image;
 import android.os.Bundle;
@@ -15,9 +16,11 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -52,10 +55,26 @@ public class EventFormFragment extends Fragment  implements IEventUtilsCallback,
     //DatePicker
     private EditText editTextDate;
     private Button buttonDate;
-
     private int lastSelectedYear;
     private int lastSelectedMonth;
     private int lastSelectedDayOfMonth;
+    //HourPicker
+    private EditText editTextHour;
+    private int lastSelectedHour = -1;
+    private int lastSelectedMinute = -1;
+    //Inputs
+    TextView _errorDisplay;;
+    TextView eventTitle;
+    TextView eventLink;
+    TextView eventDate;
+    TextView eventHour;
+    TextView eventAddress;
+    TextView eventDescription;
+    //
+    Boolean errorForm = true;
+
+
+
     private User user;
     private int userID;
     private IPostEventCallback c;
@@ -72,6 +91,7 @@ public class EventFormFragment extends Fragment  implements IEventUtilsCallback,
         _thread.start();
         c = this;
 
+
     }
 
     @Override
@@ -79,9 +99,17 @@ public class EventFormFragment extends Fragment  implements IEventUtilsCallback,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_event_form, container, false);
-        //Le click de notre bouton submit dans le fragment
+        //On traite sur notre btn pr laffichage dynamique
         Button buttonSubmit = (Button) view.findViewById(R.id.submitEvent);
         buttonSubmit.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_add_24, 0, 0, 0);
+        final float scale = getContext().getResources().getDisplayMetrics().density;
+        int pixels = (int) (70 * scale + 0.5f);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                pixels
+        );
+        params.setMargins(0, 0, 0, 200);
+        buttonSubmit.setLayoutParams(params);
         //On vire le logo du header pour gagner en harmonie
         RelativeLayout outer = (RelativeLayout)view.findViewById(R.id.headerInclude);
         ImageView iv = (ImageView)outer.findViewById(R.id.imageViewLogoGL);
@@ -90,6 +118,14 @@ public class EventFormFragment extends Fragment  implements IEventUtilsCallback,
         iv.setVisibility(View.GONE);
         //On vire tout
         outer.setVisibility(View.GONE);
+        //Instance inputs
+        _errorDisplay = view.findViewById(R.id.errorEventForm);
+        eventTitle = view.findViewById(R.id.EventFormEventTitle);
+        eventLink = view.findViewById(R.id.EventFormEventLink);
+        eventDate = view.findViewById(R.id.editText_date);
+        eventHour = view.findViewById(R.id.editText_hour);
+        eventAddress = view.findViewById(R.id.EventFormEventAddress);
+        eventDescription = view.findViewById(R.id.EventFormEventDescription);
 
         buttonSubmit.setOnClickListener(new View.OnClickListener()
         {
@@ -100,26 +136,12 @@ public class EventFormFragment extends Fragment  implements IEventUtilsCallback,
                 EventType typeSelected = (EventType) mySpinnerCat.getSelectedItem();
                 Spinner mySpinnerCan = (Spinner) getActivity().findViewById(R.id.spinnerEventFormCanal);
                 EventCanal canalSelected = (EventCanal) mySpinnerCan.getSelectedItem();
-                TextView _errorDisplay = getActivity().findViewById(R.id.errorEventForm);
-                TextView eventTitle = getActivity().findViewById(R.id.EventFormEventTitle);
-                TextView eventLink = getActivity().findViewById(R.id.EventFormEventLink);
-                TextView eventDate = getActivity().findViewById(R.id.editText_date);
-                TextView eventAddress = getActivity().findViewById(R.id.EventFormEventAddress);
-                TextView eventDescription = getActivity().findViewById(R.id.EventFormEventDescription);
-                eventTitle.setText("test");
-                eventLink.setText("test");
-                eventAddress.setText("test");
-                eventTitle.setText("test");
 
                 //Si un des champs n'est pas rempli
-                if(eventTitle.getText().toString().length() <= 0 ||
-                        eventLink.getText().toString().length() <= 0 ||
-                        eventDate.getText().toString().length() <= 0 ||
-                        eventAddress.getText().toString().length() <= 0 ||
-                        eventDescription.getText().toString().length() <= 0)
-                {
+                getEventFormError();
+
+                if(errorForm)
                     _errorDisplay.setText("Veuillez remplir tous les champs");
-                }
                 //Sinon on post
                 else{
                     try {
@@ -132,6 +154,7 @@ public class EventFormFragment extends Fragment  implements IEventUtilsCallback,
                         eventToSend.setEventAddress(eventAddress.getText().toString());
                         eventToSend.setEventDescription(eventDescription.getText().toString());
                         eventToSend.setEventLink(eventLink.getText().toString());
+                        eventToSend.setEventHour(eventHour.getText().toString());
                         //On parse la string au format date
                         Date date = new SimpleDateFormat("dd/MM/yyyy").parse(eventDate.getText().toString());
                         //le modele se charge d'un deuxieme parse au format de la bdd yyyy-MM-dd voir annotation dans le fichier
@@ -160,6 +183,15 @@ public class EventFormFragment extends Fragment  implements IEventUtilsCallback,
         this.lastSelectedYear = c.get(Calendar.YEAR);
         this.lastSelectedMonth = c.get(Calendar.MONTH);
         this.lastSelectedDayOfMonth = c.get(Calendar.DAY_OF_MONTH);
+        //SelectHour
+        this.editTextHour = (EditText) view.findViewById(R.id.editText_hour);
+        editTextHour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // DO STUFF
+                buttonSelectHour();
+            }
+        });
         return view;
     }
 
@@ -219,7 +251,6 @@ public class EventFormFragment extends Fragment  implements IEventUtilsCallback,
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 editTextDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-
                 lastSelectedYear = year;
                 lastSelectedMonth = monthOfYear;
                 lastSelectedDayOfMonth = dayOfMonth;
@@ -229,5 +260,66 @@ public class EventFormFragment extends Fragment  implements IEventUtilsCallback,
         datePickerDialog = new DatePickerDialog(getActivity(), dateSetListener, lastSelectedYear, lastSelectedMonth, lastSelectedDayOfMonth);
         // Show
         datePickerDialog.show();
+    }
+
+    // User click on 'Select Hour' button.
+    private void buttonSelectHour() {
+        if(this.lastSelectedHour == -1)  {
+            // Get Current Time
+            final Calendar c = Calendar.getInstance();
+            this.lastSelectedHour = c.get(Calendar.HOUR_OF_DAY);
+            this.lastSelectedMinute = c.get(Calendar.MINUTE);
+        }
+        // Time Set Listener.
+        TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
+
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                editTextHour.setText(hourOfDay + ":" + minute );
+                lastSelectedHour = hourOfDay;
+                lastSelectedMinute = minute;
+            }
+        };
+        TimePickerDialog timePickerDialog = null;
+            timePickerDialog = new TimePickerDialog(getContext(), timeSetListener, lastSelectedHour, lastSelectedMinute, true);
+        // Show
+        timePickerDialog.show();
+    }
+
+    private void getEventFormError(){
+        if (eventTitle.getText().toString().length() <= 0) {
+            eventTitle.setError("Veuillez renseigner un titre svp.");
+            errorForm = true;
+        }else{
+            eventTitle.setError(null);
+        }
+        if (eventLink.getText().toString().length() <= 0) {
+            eventLink.setError("Veuillez renseigner un lien svp.");
+            errorForm = true;
+        }else{
+            eventLink.setError(null);
+        }
+        if (eventAddress.getText().toString().length() <= 0) {
+            eventAddress.setError("Veuillez renseigner une adresse svp.");
+            errorForm = true;
+        }else{
+            eventAddress.setError(null);
+        }
+        if (eventDate.getText().toString().length() <= 0) {
+            eventDate.setError("Veuillez renseigner une date svp.");
+            errorForm = true;
+        }else{
+            eventDate.setError(null);
+        }
+        if (eventDescription.getText().toString().length() <= 0) {
+            eventDescription.setError("Veuillez renseigner une description svp.");
+            errorForm = true;
+        }else{
+            eventDescription.setError(null);
+        }
+
+        if(eventTitle.getError() == null && eventLink.getError() == null
+                && eventAddress.getError() == null && eventDate.getError() == null && eventDescription.getError() == null)
+            errorForm = false;
     }
 }

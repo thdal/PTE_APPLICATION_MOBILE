@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-  <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:tools="http://schemas.android.com/tools"
-      android:layout_width="match_parent"
-        android:layout_height="match_parent"
-    android:fillViewport="true"
+  <ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
-
-<LinearLayout
-    android:id="@+id/EventFormMainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".tabs.FormEventActivity">
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:id="@+id/EventFormMainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".tabs.FormEventActivity">
 
     <include
         android:id="@+id/headerInclude"
@@ -30,14 +30,13 @@
         app:endIconMode="clear_text"
         app:startIconDrawable="@drawable/ic_baseline_title_24">
 
-        <EditText
-            android:id="@+id/EventFormEventTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            />
+    <EditText
+        android:id="@+id/EventFormEventTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -56,8 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            />
+            android:layout_marginLeft="10dp"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -105,6 +103,31 @@
             />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/EventFormEventHourLayout"
+        android:layout_marginTop="10dp"
+        android:hint="Heure"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:focusable="false"
+        android:theme="@style/GLTextInputLayout"
+        app:endIconMode="custom"
+        app:startIconDrawable="@drawable/ic_baseline_access_time_24"
+        app:startIconContentDescription="Choisir une heure">
+
+        <EditText
+            android:id="@+id/editText_hour"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:focusable="false"
+            android:clickable="true"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -112,17 +135,17 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/spinner_bg">
+
         <Spinner
             android:id="@+id/spinnerEventFormCat"
             style="@style/Widget.AppCompat.Spinner"
             android:layout_width="match_parent"
             android:layout_height="?attr/dropdownListPreferredItemHeight"
-            android:layout_margin="10dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:dropDownWidth="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
             android:drawable="@drawable/abc_spinner_mtrl_am_alpha"
+            android:dropDownWidth="match_parent"
             android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
             android:paddingRight="14dp"
             android:popupBackground="@android:color/white"
@@ -148,7 +171,6 @@
             android:layout_height="?attr/dropdownListPreferredItemHeight"
             android:layout_margin="10dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:dropDownWidth="match_parent"
             android:drawable="@drawable/abc_spinner_mtrl_am_alpha"
@@ -188,10 +210,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:textAlignment="center"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:background="@android:color/white"
-        android:text=""
         android:textColor="#ba160c" />
 
     <Button
@@ -204,11 +226,9 @@
         android:backgroundTint="@color/bluegloballive"
         android:textColor="@color/white"
         android:text="Ajouter"
-        android:drawableTint="@color/white"
-        android:layout_marginBottom="100dp"/>
+        android:drawableTint="@color/white"/>
 
 
-
-</LinearLayout>
-    </ScrollView>
+    </LinearLayout>
+</ScrollView>
 

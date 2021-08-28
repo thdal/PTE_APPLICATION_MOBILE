@@ -38,6 +38,8 @@ public class RegisterActivity extends MainActivity implements View.OnClickListen
     TextView lastname;
     TextView email;
     TextView password;
+    CheckBox checkBoxRGPD;
+
     //Form
     Boolean errorForm = true;
 
@@ -51,7 +53,7 @@ public class RegisterActivity extends MainActivity implements View.OnClickListen
         lastname = findViewById(R.id.Lastname);
         email =  findViewById(R.id.Email);
         password = findViewById(R.id.Password);
-
+        checkBoxRGPD = findViewById(R.id.rgpdCheckBox);
         registerButton = findViewById(R.id.sinscrire);
         registerButton.setOnClickListener(this);
 
@@ -104,41 +106,8 @@ public class RegisterActivity extends MainActivity implements View.OnClickListen
         switch (v.getId()) {
             case R.id.sinscrire:
 
-                CheckBox checkBoxRGPD = findViewById(R.id.rgpdCheckBox);
-                if(!checkBoxRGPD.isChecked()){
-                    checkBoxRGPD.setError("Vous devez accepter les conditions générales d'utilisation ainsi que notre politique de confidentialité pour pouvoir vous enregistrer.");
-                    checkBoxRGPD.requestFocus();
-                    errorForm = true;
-                }
-
-                if (firstname.getText().toString().length() <= 0) {
-                    firstname.setError("Veuillez renseignez un prénom svp.");
-                    errorForm = true;
-                }else{
-                    firstname.setError(null);
-                }
-                if (email.getText().toString().length() <= 0) {
-                    email.setError("Veuillez renseignez un email svp.");
-                    errorForm = true;
-                }else{
-                    email.setError(null);
-                }
-                if (lastname.getText().toString().length() <= 0) {
-                    lastname.setError("Veuillez renseignez un nom svp.");
-                    errorForm = true;
-                }else{
-                    lastname.setError(null);
-                }
-                if (password.getText().toString().length() <= 0) {
-                    password.setError("Veuillez renseignez un password svp.");
-                    errorForm = true;
-                }else{
-                    password.setError(null);
-                }
-
-                if(checkBoxRGPD.isChecked() && firstname.getError() == null && email.getError() == null && lastname.getError() == null
-                && password.getError() == null)
-                    errorForm = false;
+                //Declenche le boolean errorForm si le formulaire n'est pas correctement rempli
+                getRegisterFormError();
 
                 if(errorForm){
                     return;
@@ -219,5 +188,49 @@ public class RegisterActivity extends MainActivity implements View.OnClickListen
         public void onClick(View v) {
             mListener.onClick(v);
         }
+    }
+
+    public void getRegisterFormError(){
+
+        if(!checkBoxRGPD.isChecked()){
+            checkBoxRGPD.setError("Vous devez accepter les conditions générales d'utilisation ainsi que notre politique de confidentialité pour pouvoir vous enregistrer.");
+            checkBoxRGPD.requestFocus();
+            errorForm = true;
+        }
+
+        if (firstname.getText().toString().length() <= 0) {
+            firstname.setError("Veuillez renseigner un prénom svp.");
+            errorForm = true;
+        }else{
+            firstname.setError(null);
+        }
+        if (email.getText().toString().length() <= 0) {
+            email.setError("Veuillez renseigner un email svp.");
+            errorForm = true;
+        }else{
+            email.setError(null);
+        }
+        if (lastname.getText().toString().length() <= 0) {
+            lastname.setError("Veuillez renseigner un nom svp.");
+            errorForm = true;
+        }else{
+            lastname.setError(null);
+        }
+        if (password.getText().toString().length() <= 0) {
+            password.setError("Veuillez renseigner un password svp.");
+            errorForm = true;
+        }else{
+            password.setError(null);
+        }
+
+        //Si pas d'erreur
+        if(checkBoxRGPD.isChecked() && firstname.getError() == null
+                && email.getError() == null && lastname.getError() == null
+                && password.getError() == null)
+            errorForm = false;
+
+    }
+    public String test(){
+        return "cc";
     }
 }

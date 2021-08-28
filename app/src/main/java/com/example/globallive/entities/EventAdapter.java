@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -77,6 +78,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
+        if(_events == null)
+            return 0;
         return _events.size();
     }
 
@@ -85,8 +88,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         private final TextView eventDescription;
         private final TextView eventDate;
         private final ImageView eventImage;
-        private final FloatingActionButton editionButton;
-        private final FloatingActionButton trashButton;
+        private final ImageButton editionButton;
+        private final ImageButton trashButton;
 
         OnEventListener mOnEventListener;
 
@@ -100,8 +103,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             eventDescription = (TextView) view.findViewById(R.id.textViewEventDescription);
             eventDate = (TextView) view.findViewById(R.id.textViewEventDate);
             eventImage = (ImageView) view.findViewById(R.id.imageViewEvent);
-            editionButton = (FloatingActionButton) view.findViewById(R.id.layoutEventBtnEdit);
-            trashButton = (FloatingActionButton) view.findViewById(R.id.layoutEventBtnTrash);
+            editionButton = (ImageButton) view.findViewById(R.id.layoutEventBtnEdit);
+            trashButton = (ImageButton) view.findViewById(R.id.layoutEventBtnTrash);
 
 
             editionButton.setOnClickListener(new View.OnClickListener() {
@@ -130,10 +133,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         public ImageView getEventImage() {
             return eventImage;
         }
-        public FloatingActionButton getEditionButton() {
+        public ImageButton getEditionButton() {
             return editionButton;
         }
-        public FloatingActionButton getTrashButton() {
+        public ImageButton getTrashButton() {
             return trashButton;
         }
 

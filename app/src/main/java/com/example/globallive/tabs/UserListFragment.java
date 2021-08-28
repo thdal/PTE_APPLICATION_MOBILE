@@ -3,7 +3,6 @@ package com.example.globallive.tabs;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.globallive.R;
-import com.example.globallive.controllers.UserEditActivity;
+import com.example.globallive.controllers.UserFormActivity;
 import com.example.globallive.entities.User;
 import com.example.globallive.entities.UserAdapter;
 import com.example.globallive.services.IUserService;
@@ -24,6 +23,7 @@ import com.example.globallive.threads.IPostUserCallback;
 import com.example.globallive.threads.IUserListCallback;
 import com.example.globallive.threads.PostUserThread;
 import com.example.globallive.threads.UserListThread;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -60,6 +60,15 @@ public class UserListFragment extends Fragment implements IUserListCallback, IDe
         // Inflate the layout for this fragment
             View view = inflater.inflate(R.layout.fragment_user_list, container, false);
             this._recyclerView=view.findViewById(R.id.recyclerViewUser);
+
+        FloatingActionButton buttonAdd= (FloatingActionButton)view.findViewById(R.id.listUserAdd);
+        buttonAdd.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                onCreateUserclick();
+            }
+        });
+
 
         return view;
     }
@@ -128,8 +137,15 @@ public class UserListFragment extends Fragment implements IUserListCallback, IDe
 
     @Override
     public void onUserEditClick(int position) {
-        Intent intent = new Intent(getActivity(), UserEditActivity.class);
+        Intent intent = new Intent(getActivity(), UserFormActivity.class);
         intent.putExtra("SELECTED_USER", (Serializable) this._users.get(position) );
+        intent.putExtra("CURRENT_USER", (Serializable) this.currentUser );
+        startActivity(intent);
+    }
+
+    public void onCreateUserclick() {
+        Intent intent = new Intent(getActivity(), UserFormActivity.class);
+        intent.putExtra("SELECTED_USER", (Serializable) new User() );
         intent.putExtra("CURRENT_USER", (Serializable) this.currentUser );
         startActivity(intent);
     }
@@ -151,9 +167,6 @@ public class UserListFragment extends Fragment implements IUserListCallback, IDe
     public void onUserDeleteClick(int position){
         int userID = this._users.get(position).getId();
         int profileID = this._users.get(position).getProfile_id();
-        Log.d("userID", String.valueOf(userID));
-        Log.d("profileID", String.valueOf(profileID));
-
         _deleteUserThread = new DeleteUserThread(this, userID, profileID, _userService);
         _deleteUserThread.start();
     }

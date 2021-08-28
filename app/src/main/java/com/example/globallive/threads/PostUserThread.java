@@ -1,5 +1,7 @@
 package com.example.globallive.threads;
 
+import android.util.Log;
+
 import com.example.globallive.entities.Event;
 import com.example.globallive.entities.User;
 import com.example.globallive.services.IEventService;

@@ -2,6 +2,7 @@ package com.example.globallive.services;
 
 import android.util.Log;
 
+import com.example.globallive.R;
 import com.example.globallive.entities.Event;
 import com.example.globallive.entities.EventCanal;
 import com.example.globallive.entities.EventType;
@@ -21,13 +22,14 @@ import java.util.List;
 
 
 public class EventServiceImplementation implements IEventService {
-    private String _baseUrl = "http://192.168.0.25:3000";
+    private String _baseUrl = App.getAppResources().getString(R.string.api_url);
     private String _postEventEndpoint = "/api/events";
     private String _putEventEndpoint = "/api/eventsMobile";
     private String _getEventsEndpoint = "/api/events";
     private String _getEventsWithTypeEndpoint = "/api/events/type";
     private String _getEventsWithCanalEndpoint = "/api/events/canal";
     private String _getEventsOfTheDay = "/api/events/oftheday";
+    private String _getSearchEvents = "/api/searchEvents";
     private String _deleteEvent = "/api/event";
     private String _getEventTypes ="/api/eventTypes";
     private String _getEventCanaux ="/api/eventCanals";
@@ -128,5 +130,24 @@ public class EventServiceImplementation implements IEventService {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("DELETE");
         int responseCode = connection.getResponseCode();
+    }
+
+    @Override
+    public List<Event> GetWithWord(String word) throws IOException, JSONException {
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        //String json = ow.writeValueAsString(word);
+        //On ajoute un paramétre pour que ça match avec l'api
+        JSONObject subParam = new JSONObject();
+        subParam.put("word", word);
+        String response = ConnectionUtils.POST(this._baseUrl + this._getSearchEvents, subParam.toString());
+        if(response != null && response.length() > 0){
+            Log.d("LareponseWord", response);
+            ObjectMapper mapper = new ObjectMapper();
+            List<Event> return_value = mapper.readValue(String.valueOf(response), new TypeReference<List<Event>>(){});
+            return return_value;
+        }else{
+
+        }
+        return null;
     }
 }

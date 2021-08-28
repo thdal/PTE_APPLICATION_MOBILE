@@ -1,11 +1,15 @@
 package com.example.globallive.controllers;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.globallive.R;
@@ -18,6 +22,7 @@ import com.example.globallive.threads.IEventUtilsCallback;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
+import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +41,12 @@ public class EventViewActivity extends MainActivity implements IEventUtilsCallba
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_view);
         showBack();
+        //On vire le logo du header pour gagner en harmonie
+        RelativeLayout outer = (RelativeLayout)findViewById(R.id.headerInclude);
+        ImageView iv = (ImageView)outer.findViewById(R.id.imageViewLogoGL);
+        TextView txtLabel = (TextView)outer.findViewById(R.id.textViewTitle);
+        txtLabel.setTypeface(null, Typeface.BOLD);
+        iv.setVisibility(View.GONE);
         //On récupére l'objet événement selectionné depuis la liste
         com.example.globallive.entities.Event monEvent = (com.example.globallive.entities.Event) getIntent().getSerializableExtra("SELECTED_EVENT");
         //On init notre service et on l'envoie au thread cela permettra d'afficher
@@ -52,18 +63,29 @@ public class EventViewActivity extends MainActivity implements IEventUtilsCallba
         TextView eventDescription = findViewById(R.id.textViewEventDescription);
         TextView eventLink = findViewById(R.id.textViewEventLink);
         TextView eventDate = findViewById(R.id.textViewEventDate);
+        TextView eventHour = findViewById(R.id.textViewEventHour);
         TextView eventAdresse = findViewById(R.id.textViewEventAdresse);
         ImageView eventImg = findViewById(R.id.imageViewEventView);
         //On convertit au format date
         Date date = monEvent.getEventDate();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
         String strDate = dateFormat.format(date);
+        //On format l'heure
+        String eventHourstr = "";
+        if(monEvent.getEventHour() == null){
+            eventHourstr = "--:--";
+        }else{
+            eventHourstr = monEvent.getEventHour().toString();
+        }
         //On rempli notre vue avec les données de l'événement selectionné.
         eventDate.setText(strDate);
+        eventHour.setText(eventHourstr);
         eventDescription.setText(monEvent.getEventDescription());
         eventLink.setText(monEvent.getEventLink());
         eventAdresse.setText(monEvent.getEventAddress());
-        eventName.setText(monEvent.getEventName());
+        //eventName.setText(monEvent.getEventName());
+        setTitle(monEvent.getEventName());
+
         //Si notre événément a une image perso on va la chercher sur l'API avec le bon chemin
         //Sinon dans le dossier drawable l'image par défaut
         if(monEvent.isEventImg()){
@@ -97,11 +119,19 @@ public class EventViewActivity extends MainActivity implements IEventUtilsCallba
                     if(eventType.getId() == categorieId){
                         TextView eventCategorie = findViewById(R.id.textViewEventCategorie);
                         eventCategorie.setText(eventType.getTypeEventName());
+                        ImageView imageViewCategorie = findViewById(R.id.imageViewCategorie);
+                        String mDrawableName = stripAccents(eventType.getTypeEventName().toLowerCase());
+                        //On récupére et on assigne nos icons dynamiquement
+                        int resID = getResources().getIdentifier(mDrawableName , "drawable", getPackageName());
+                        imageViewCategorie.setImageResource(resID);
                     }
                 }
             }
         });
     }
+
+
+
 
     @Override
     public void getEventCanauxCallback(List<EventCanal> eventCanaux){
@@ -112,10 +142,23 @@ public class EventViewActivity extends MainActivity implements IEventUtilsCallba
                     if(eventCanal.getId() == categorieId){
                         TextView eventCanalTxtView = findViewById(R.id.textViewEventCanal);
                         eventCanalTxtView.setText(eventCanal.getCanalEventName());
+                        ImageView imageViewCanal = findViewById(R.id.imageViewCanal);
+                        String mDrawableName = stripAccents(eventCanal.getCanalEventName().toLowerCase());
+                        //On récupére et on assigne nos icons dynamiquement
+                        int resID = getResources().getIdentifier(mDrawableName , "drawable", getPackageName());
+                        imageViewCanal.setImageResource(resID);
                     }
                 }
             }
         });
+    }
+
+    //On vire les accents de notre string pour matcher avec nos images en local
+    public static String stripAccents(String s)
+    {
+        s = Normalizer.normalize(s, Normalizer.Form.NFD);
+        s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+        return s;
     }
 
 

@@ -3,7 +3,9 @@ package com.example.globallive.entities;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -44,8 +46,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         User user = _users.get(position);
-        holder.getUserFirstName().setText(user.getFirstName());
-        holder.getUserLastName().setText(user.getLastName());
+        holder.getUserName().setText(user.getFirstName() + ' '+ user.getLastName());
+        holder.getUserAccountType().setText(getProfileName(user.getProfile_id()));
         holder.getUserEmail().setText(user.getEmail());
         holder.getSwitchIsBanned().setChecked(user.getIsBanned());
 
@@ -74,12 +76,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private final TextView userFirstName;
-        private final TextView userLastName;
+        private final TextView userName;
+        private final TextView userAccountType;
         private final TextView userEmail;
         private final CircleImageView userImage;
-        private final FloatingActionButton editionButton;
-        private final FloatingActionButton trashButton;
+        private final ImageButton editionButton;
+        private final ImageButton trashButton;
         private final SwitchMaterial switchIsBanned;
 
         OnUserListener mOnUserListener;
@@ -90,12 +92,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             mOnUserListener = OnUserListener;
             view.setOnClickListener(this);
             // Define click listener for the ViewHolder's View
-            userFirstName = (TextView) view.findViewById(R.id.textViewUserFirstName);
-            userLastName = (TextView) view.findViewById(R.id.textViewUserLastName);
+            userName = (TextView) view.findViewById(R.id.textViewUserFirstNameLastName);
+            userAccountType = (TextView) view.findViewById(R.id.textViewUserAccountType);
             userEmail = (TextView) view.findViewById(R.id.textViewUserEmail);
             userImage = (CircleImageView) view.findViewById(R.id.imageViewUser);
-            editionButton = (FloatingActionButton) view.findViewById(R.id.layoutUsertBtnEdit);
-            trashButton = (FloatingActionButton) view.findViewById(R.id.layoutUserBtnTrash);
+            editionButton = (ImageButton) view.findViewById(R.id.layoutUsertBtnEdit);
+            trashButton = (ImageButton) view.findViewById(R.id.layoutUserBtnTrash);
             switchIsBanned = (SwitchMaterial) view.findViewById(R.id.textViewUserSwitchIsBanned);
 
             editionButton.setOnClickListener(new View.OnClickListener() {
@@ -117,22 +119,22 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             });
 
         }
-        public TextView getUserFirstName() {
-            return userFirstName;
-        }
-        public TextView getUserLastName() {
-            return userLastName;
+        public TextView getUserName() {
+            return userName;
         }
         public TextView getUserEmail() {
             return userEmail;
         }
+        public TextView getUserAccountType() {
+            return userAccountType;
+        }
         public CircleImageView getUserImage() {
             return userImage;
         }
-        public FloatingActionButton getEditionButton() {
+        public ImageButton getEditionButton() {
             return editionButton;
         }
-        public FloatingActionButton getTrashButton() {
+        public ImageButton getTrashButton() {
             return trashButton;
         }
         public SwitchMaterial getSwitchIsBanned() {
@@ -152,5 +154,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         void onUserEditClick(int position);
         void onUserDeleteClick(int position);
         void onBanUserClick(int position, boolean isBanned);
+    }
+
+    public String getProfileName(int id){
+        if(id == 1)
+            return "Organisateur";
+        if(id == 2)
+            return "Participant";
+        if(id == 3)
+            return "Administrateur";
+
+        return "";
     }
 }

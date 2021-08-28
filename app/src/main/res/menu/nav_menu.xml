@@ -22,4 +22,6 @@
     <!-- On ajoute nos canaux dynamiquement -> HomeActivity -->
     <group android:id="@+id/grpCanaux">
     </group>
+    <group android:id="@+id/grpReglementation">
+    </group>
 </menu>
