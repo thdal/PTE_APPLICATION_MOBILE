@@ -4,7 +4,7 @@
 
 -------------
 
-![alt text](https://github.com/thdal/PTE_APPLICATION_MOBILE/blob/master/AppMobile.png)
+![alt text](https://github.com/thdal/PTE_APPLICATION_MOBILE/blob/master/AppMobile.png =250x250)
 
 -------------
 
