@@ -28,13 +28,13 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     private ArrayList<Event> _events;
     private EventListFragment activity;
     private OnEventListener mOnEventListener;
-    private int userID;
+    private User currentUser;
 
-    public EventAdapter(EventListFragment activity, ArrayList<Event> events, OnEventListener onEventListener, int userID){
+    public EventAdapter(EventListFragment activity, ArrayList<Event> events, OnEventListener onEventListener, User currentUser){
         this.activity = activity;
         this._events = events;
         this.mOnEventListener = onEventListener;
-        this.userID = userID;
+        this.currentUser = currentUser;
     }
 
     @NonNull
@@ -67,7 +67,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         }else{
             Picasso.with(holder.getEventImage().getContext()).load(R.drawable.event).into(holder.getEventImage());
         }
-        if(this.userID == event.getUserId()){
+        if(this.currentUser.getId() == event.getUserId() || this.currentUser.getProfile_id() == 3){
             holder.getEditionButton().setVisibility(View.VISIBLE);
             holder.getTrashButton().setVisibility(View.VISIBLE);
         }else{

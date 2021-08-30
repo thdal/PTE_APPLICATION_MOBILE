@@ -2,8 +2,8 @@
     <string name="app_name">GlobalLive</string>
     <string name="open">open</string>
     <string name="close">close</string>
-    <string name="api_url">http://192.168.0.25:3000</string>
-    <!--<string name="api_url">https://pte-epsi.thibaut-dalens.com:3000</string>-->
+    <!--<string name="api_url">http://192.168.0.25:3000</string>-->
+    <string name="api_url">https://pte-epsi.thibaut-dalens.com:3000</string>
 
 
 

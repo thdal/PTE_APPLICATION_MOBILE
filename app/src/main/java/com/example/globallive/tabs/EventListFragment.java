@@ -23,6 +23,7 @@ import com.example.globallive.controllers.AuthenticationActivity;
 import com.example.globallive.controllers.EventEditActivity;
 import com.example.globallive.controllers.EventViewActivity;
 import com.example.globallive.controllers.MainActivity;
+import com.example.globallive.entities.Event;
 import com.example.globallive.entities.EventAdapter;
 import com.example.globallive.entities.User;
 import com.example.globallive.services.EventServiceImplementation;
@@ -47,15 +48,16 @@ public class EventListFragment extends Fragment implements IEventListCallback, I
     private DeleteEventThread _deleteEventThread;
     private RecyclerView _recyclerView;
     private EventAdapter _eventAdapter;
-    private Handler _mainHandler = new Handler();
+    private Handler _mainHandler;
     private User currentUser;
 
     private ArrayList<com.example.globallive.entities.Event> _events = new ArrayList<>();
 
-    public EventListFragment(User user) {
+    public EventListFragment(User user, EventServiceImplementation es, Handler handler) {
         // Required public constructor
         this.currentUser = user;
-        this._eventService = new EventServiceImplementation();
+        this._eventService = es;
+        _mainHandler = handler;
         _eventListThread = new EventListThread(this, this._userId, _eventService, 0, 0, "");
         _eventListThread.start();
     }
@@ -68,9 +70,9 @@ public class EventListFragment extends Fragment implements IEventListCallback, I
         return view;
     }
 
-    private void DisplayMyEvents(List<com.example.globallive.entities.Event> events){
+    public void DisplayMyEvents(List<com.example.globallive.entities.Event> events){
         this._events = (ArrayList<com.example.globallive.entities.Event>) events;
-        _eventAdapter = new EventAdapter(this, (ArrayList<com.example.globallive.entities.Event>) events, this, this.currentUser.getId());
+        _eventAdapter = new EventAdapter(this, (ArrayList<com.example.globallive.entities.Event>) events, this, this.currentUser);
         _recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         _recyclerView.setAdapter(_eventAdapter);
 
@@ -83,6 +85,7 @@ public class EventListFragment extends Fragment implements IEventListCallback, I
         _mainHandler.post(new Runnable() {
             @Override
             public void run() {
+                _events = (ArrayList<com.example.globallive.entities.Event>) events;
                 //On clear le message d'erreur si on a des événements
                 LinearLayout llErr = (LinearLayout) getActivity().findViewById(R.id.linearLayoutError);
                 llErr.setVisibility(View.GONE);
@@ -126,10 +129,6 @@ public class EventListFragment extends Fragment implements IEventListCallback, I
 
     @Override
     public void onEventEditClick(int position) {
-        /*Intent intent = new Intent(getActivity(), EventEditActivity.class);
-        intent.putExtra("SELECTED_EVENT", (Serializable) this._events.get(position) );
-        intent.putExtra("CURRENT_USER", (Serializable) this.currentUser );
-        startActivity(intent);*/
         MainActivity activity = (MainActivity) this.getActivity();
         EventEditActivity.displayActivity(activity, this.currentUser, this._events.get(position));
 
@@ -149,5 +148,9 @@ public class EventListFragment extends Fragment implements IEventListCallback, I
         int eventID = this._events.get(position).getId();
         _deleteEventThread = new DeleteEventThread(this, eventID, _eventService);
         _deleteEventThread.start();
+    }
+
+    public List<Event> getResult(){
+        return _events;
     }
 }

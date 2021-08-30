@@ -42,7 +42,7 @@ public class UserFormActivity extends MainActivity implements IPostUserCallback,
     private Handler _mainHandler = new Handler();
     private User selectedUser;
     private IUserService _userService;
-    Context context = this;
+    public static Context context;
     User currentUser;
     private PostUserThread _postUserThread;
     private DeleteUserThread _deleteUserThread;
@@ -51,9 +51,9 @@ public class UserFormActivity extends MainActivity implements IPostUserCallback,
 
     //Nos inputs
     private TextView userFirstName;
-    private TextView userLastName;
+    public TextView userLastName;
     private TextView userEmail;
-    private Button btnSubmit;
+    public Button btnSubmit;
     private Button btnDelete;
     private ImageView imageProfil;
     private Spinner profilSpinner;
@@ -76,6 +76,7 @@ public class UserFormActivity extends MainActivity implements IPostUserCallback,
         cPost = this; //callbackPost
         cDel = this; //callbackDel
         //Recup nos objets
+        context = this;
         this.currentUser = (User) getIntent().getSerializableExtra("CURRENT_USER");
         selectedUser = (User) getIntent().getSerializableExtra("SELECTED_USER");
         //On vire le logo du header pour gagner en harmonie
@@ -190,6 +191,10 @@ public class UserFormActivity extends MainActivity implements IPostUserCallback,
                 HomeActivity.displayActivity((MainActivity) context, currentUser, "");
             }
         });
+    }
+
+    public static Context getTargetContext(){
+        return context;
     }
 
     @Override
