@@ -4,7 +4,7 @@
 
 -------------
 
-![alt text](https://github.com/thdal/PTE_APPLICATION_MOBILE/blob/main/AppMobile.png)
+![alt text](https://github.com/thdal/PTE_APPLICATION_MOBILE/blob/master/AppMobile.png)
 
 -------------
 
@@ -14,6 +14,6 @@ Configurer le chemin vers l'API :
 
 Se rendre dans le fichier xml suivant, "app/src/main/res/values/strings.xml", et configurer la variable "api_url" avec le bon chemin vers votre API.
 
-Exemple pour l'API de notre projet :
+Chemin vers l'API en ligne de notre projet :
 
-"<string name="api_url">https://pte-epsi.thibaut-dalens.com:3000</string>"
+"https://pte-epsi.thibaut-dalens.com:3000"
