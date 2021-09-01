@@ -1,4 +1,4 @@
-# GlobalLive
+# GlobalLive - Application mobile
 
 ### Projet de validation - EPSI B3
 

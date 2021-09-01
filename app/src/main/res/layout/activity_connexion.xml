@@ -68,7 +68,7 @@
         android:layout_gravity="center"
         android:backgroundTint="@color/bluegloballive"
         android:textColor="@color/black"
-        android:text="Register"  />
+        android:text="S'inscrire"  />
 
     <Button
         android:id="@+id/invite"
