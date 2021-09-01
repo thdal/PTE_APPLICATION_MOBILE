@@ -16,5 +16,5 @@
 
 Configurer le chemin vers l'API :
 
-Se rendre dans le fichier xml suivant, "app/src/main/res/values/strings.xml", et configurer la variable "api_url" avec le bon chemin vers votre API.
+Se rendre dans le fichier suivant, "app/src/main/res/values/strings.xml", et configurer la variable "api_url" avec le chemin de votre API.
 
