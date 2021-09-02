@@ -48,8 +48,6 @@ public class AuthenticationActivity extends MainActivity implements View.OnClick
 
         TextView email = findViewById(R.id.identifiant);
         TextView password = findViewById(R.id.mot_de_passe);
-        email.setText("admin@epsi.fr");
-        password.setText("adminadmin");
     }
     @Override
     public void onClick(View v) {
@@ -85,7 +83,7 @@ public class AuthenticationActivity extends MainActivity implements View.OnClick
             @Override
             public void run() {
                 HomeActivity.displayActivity(AuthenticationActivity.this, user, "");
-                //HomeActivity.displayActivity(com.example.globallive.controllers.AuthenticationActivity.this);
+                
             }
         });
     }
